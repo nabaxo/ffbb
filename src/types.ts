@@ -4,12 +4,12 @@ export interface entry {
     ageRating: 'G-T' | 'E-M',
     authorRequestAge: boolean;
     archiveWarnings:
-    "NO WARNINGS" |
-    "NO INDICATION" |
-    "GRAPHIC VIOLENCE" |
-    "MAJOR DEATH" |
-    "RAPE" |
-    "UNDERAGE";
+    "creator chose not to use archive warnings" |
+    "graphic depictions of violence" |
+    "major character death" |
+    "no archive warnings apply" |
+    "rape/non-con" |
+    "underage";
     characters: string[];
     pairings: [[string, string]];
     tags: string[];
