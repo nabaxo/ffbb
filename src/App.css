@@ -1,43 +1,43 @@
 :root {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {}
 
 .App-header {
-  text-align: center;
-  background-color: #282c34;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    text-align: center;
+    background-color: #282c34;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 nav {
-  background-color: aliceblue;
-  width: 100%;
-  height: 5vh;
+    background-color: aliceblue;
+    width: 100%;
+    height: 5vh;
 }
 
 nav li {
-  display: inline;
-  padding: 0 1rem;
-  font-size: 1rem;
-  text-decoration: none;
+    display: inline;
+    padding: 0 1rem;
+    font-size: 1rem;
+    text-decoration: none;
 }
 
 .App-body {
-  height: 80vh;
-  background-color: #def;
+    height: 80vh;
+    background-color: #def;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
