@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import SubmitNewRequests from './SubmitNewRequest';
 
 
 function App() {
@@ -28,11 +29,11 @@ function App() {
                         <Route exact path='/'>
                             <Redirect to='/list' />
                         </Route>
-                        <Route path='list'>
+                        <Route path='/list'>
 
                         </Route>
-                        <Route path='submit-new'>
-
+                        <Route path='/submit-new'>
+                            <SubmitNewRequests />
                         </Route>
                     </Switch>
                 </main>

@@ -2,6 +2,11 @@
     font-size: 16px;
 }
 
+body {
+    margin: 0;
+    background-color: rgb(229, 233, 236);
+}
+
 .App {
     text-align: center;
 }
@@ -26,6 +31,10 @@ nav {
     height: 5vh;
 }
 
+nav ul {
+    margin: 0;
+}
+
 nav li {
     display: inline;
     padding: 0 1rem;
@@ -34,10 +43,38 @@ nav li {
 }
 
 .App-body {
-    height: 80vh;
-    background-color: #def;
+    background-color: #fff;
+    height: 78vh;
+    width: 60vw;
+    margin: 0 auto;
+    padding: 1vh;
 }
 
 .App-link {
     color: #61dafb;
+}
+
+.submit-form,
+.submit-form div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+form>div {
+    margin-top: .5rem;
+}
+
+.align-svg {
+    display: flex;
+    align-items: center;
+}
+
+#plus {
+    padding-left: .2rem;
+    transition: all .5s ease-in-out;
+}
+
+#plus:focus {
+    outline: none
 }
