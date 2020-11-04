@@ -11,9 +11,14 @@ export interface entry {
     "rape/non-con" |
     "underage";
     characters: string[];
-    pairings: [[string, string]];
+    pairings: [pair];
     tags: string[];
     authorWarnings: string[];
     summary: string,
     tier: number;
 }
+
+export type pair = {
+    a: string;
+    b: string;
+};

@@ -3,10 +3,13 @@ import React, { ChangeEvent, useState } from 'react';
 // import { entry } from './types';
 import { BiPlusCircle } from 'react-icons/bi';
 
+import { pair } from './types';
+
 export default function SubmitNewRequests(): JSX.Element {
     // const history = useHistory();
     // const [request, setRequest] = useState<entry | null>(null);
-    const [characters, setCharacters] = useState(['']);
+    const [characters, setCharacters] = useState<string[]>(['']);
+    const [pairings, setPairings] = useState<pair[]>([{ a: '', b: '' }]);
 
     function handleAddCharacter() {
         setCharacters([
@@ -27,54 +30,93 @@ export default function SubmitNewRequests(): JSX.Element {
     }
 
     function handleChangeCharacter(event: ChangeEvent<HTMLInputElement>) {
-        const newChar = event.target.value;
-        const index = Number(event.target.name);
         const list = [...characters];
-        list[index] = newChar;
+        list[Number(event.target.name)] = event.target.value;
         setCharacters(list);
     }
 
-    const charInputs = characters.map((c, i: number) => {
+    function handleAddPairing() {
+        setPairings([
+            ...pairings,
+            { a: '', b: '' },
+        ]);
+    }
+
+    function handleRemovePairing(index: number) {
+        pairings.splice(index, 1);
+        setPairings([...pairings]);
+    }
+
+    function handleChangePairing(event: ChangeEvent<HTMLInputElement>) {
+        const index = +event.target.name.split(',')[0];
+        const name = event.target.name.split(',')[1] === 'a' ? 'a' : 'b';
+        const pairList = [...pairings];
+        pairList[index][name] = event.target.value;
+        setPairings(pairList);
+        // console.log(pairings);
+    }
+
+    const charactersInputs = characters.map((c, i: number) => {
         let sign: JSX.Element;
         if (i === characters.length - 1) {
-            sign = <BiPlusCircle tabIndex={i} onClick={handleAddCharacter} size="1.5rem" id="plus" transform="rotate(0)" color="green" />;
+            sign = <BiPlusCircle tabIndex={i} onClick={handleAddCharacter} size="1.5rem" className="plus" transform="rotate(0)" color="green" />;
         } else {
-            sign = <BiPlusCircle tabIndex={i} onClick={() => handleRemoveCharacter(i)} size="1.5rem" id="plus" transform="rotate(45)" color="red" />;
+            sign = <BiPlusCircle tabIndex={i} onClick={() => handleRemoveCharacter(i)} size="1.5rem" className="plus cross" color="red" />;
         }
         return (
             <label key={i} className="align-svg">
-                <input autoFocus={i === characters.length - 1} name={String(i)} type="text" value={characters[i]} onKeyPress={handleAddCharacterOnEnter} onChange={handleChangeCharacter} />
+                <input autoFocus={i === characters.length - 1} name={String(i)} type="text" value={c} onKeyPress={handleAddCharacterOnEnter} onChange={handleChangeCharacter} />
                 {sign}
-            </label>);
+            </label>
+        );
+    });
+
+    const pairingsInputs = pairings.map((c, i) => {
+        let sign: JSX.Element;
+        // console.log(c);
+        if (i === pairings.length - 1) {
+            sign = <BiPlusCircle tabIndex={i} onClick={handleAddPairing} size="1.5rem" className="plus" transform="rotate(0)" color="green" />;
+        } else {
+            sign = <BiPlusCircle tabIndex={i} onClick={() => handleRemovePairing(i)} size="1.5rem" className="plus cross" color="red" />;
+        }
+        return (
+            <label key={i} className="align-svg">
+                <input name={i + ',a'} type="text" value={c['a']} onChange={handleChangePairing} />
+                x
+                <input name={i + ',b'} type="text" value={c['b']} onChange={handleChangePairing} />
+                {sign}
+            </label>
+        );
+
     });
 
     return (
         <form className="submit-form" action="">
             <div>
                 <strong>Would you like a beta?</strong>
-                <label>Yes: <input name="requestBeta" type="checkbox" /></label>
+                <label><input name="requestBeta" type="checkbox" />Yes</label>
             </div>
             <div>
                 <strong>Rating:</strong>
-                <label>G-T: <input name="rating" type="radio" value="G-T" /></label>
-                <label>E-M: <input name="rating" type="radio" value="E-M" /></label>
+                <label><input name="rating" type="radio" value="G-T" />G-T</label>
+                <label><input name="rating" type="radio" value="E-M" />E-M</label>
             </div>
             <div>
                 <strong>Would you like an 18+ collaborator?</strong>
-                <label>Yes: <input type="checkbox" /></label>
+                <label><input type="checkbox" />Yes</label>
             </div>
             <div><strong>Archive warnings (select all that apply):</strong>
-                <label>Nothing applies:<input type="checkbox" value="no archive warnings apply" /></label>
-                <label>Graphic violence:<input type="checkbox" value="graphic depictions of violence" /></label>
-                <label>Major character death:<input type="checkbox" value="major character death" /></label>
-                <label>Rape/Non-con:<input type="checkbox" value="rape/non-con" /></label>
-                <label>Underage:<input type="checkbox" value="underage" /></label>
+                <label><input type="checkbox" value="no archive warnings apply" />Nothing applies</label>
+                <label><input type="checkbox" value="graphic depictions of violence" />Graphic violence</label>
+                <label><input type="checkbox" value="major character death" />Major character death</label>
+                <label><input type="checkbox" value="rape/non-con" />Rape/Non-con</label>
+                <label><input type="checkbox" value="underage" />Underage</label>
             </div>
-            <div ><strong>Characters:</strong>
-                {charInputs}
+            <div><strong>Characters:</strong>
+                {charactersInputs}
             </div>
             <div><strong>parings</strong>
-                <label><input type="text" /></label>
+                {pairingsInputs}
             </div>
             <div>
                 <label><input type="text" /></label>

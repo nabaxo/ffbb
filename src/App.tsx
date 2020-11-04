@@ -4,7 +4,6 @@ import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import SubmitNewRequests from './SubmitNewRequest';
 
-
 function App() {
     const history = createBrowserHistory();
 
