@@ -70,9 +70,13 @@ form>div {
     align-items: center;
 }
 
-#plus {
-    padding-left: .2rem;
-    transition: all .5s ease-in-out;
+.plus {
+    transition: all .3s ease-in-out;
+}
+
+.cross {
+    transform: rotate(135deg);
+    transform-origin: 50% 50%;
 }
 
 #plus:focus {
