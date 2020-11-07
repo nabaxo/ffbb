@@ -10,14 +10,14 @@ function App() {
     return (
         <Router history={history}>
             <header className="App-header">
-                <h1>Test</h1>
+                <h1>Fan Fic Big Bang</h1>
                 <nav>
                     <ul>
                         <li>
-                            <NavLink to='/list'>List</NavLink>
+                            <NavLink activeClassName="active" to='/list'>List</NavLink>
                         </li>
                         <li>
-                            <NavLink to='/submit-new'>Submit new entry</NavLink>
+                            <NavLink activeClassName="active" to='/submit-new'>Submit New Entry</NavLink>
                         </li>
                     </ul>
                 </nav>
