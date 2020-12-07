@@ -17,7 +17,7 @@ function App() {
                             <NavLink activeClassName="active" to='/list'>List</NavLink>
                         </li>
                         <li>
-                            <NavLink activeClassName="active" to='/submit-new'>Submit New Entry</NavLink>
+                            <NavLink activeClassName="active" to='/submit-new'>Submit Entry</NavLink>
                         </li>
                     </ul>
                 </nav>

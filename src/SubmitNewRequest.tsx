@@ -1,13 +1,14 @@
 import React, { ChangeEvent, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import firebase from 'firebase/app';
+import { useHistory } from 'react-router-dom';
 // import { entry } from './types';
 import { BiPlusCircle } from 'react-icons/bi';
 
 import { pair, entry } from './types';
 
 export default function SubmitNewRequests(): JSX.Element {
-    // const history = useHistory();
-    // const [request, setRequest] = useState<entry | null>(null);
+    const history = useHistory();
+    const collection = firebase.firestore().collection('requests');
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<entry>({
@@ -25,10 +26,13 @@ export default function SubmitNewRequests(): JSX.Element {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (!request.archiveWarnings) {
+        if (!request.archiveWarnings || request.archiveWarnings.length === 0) {
             request.archiveWarnings = ['creator chose not to use archive warnings'];
         }
         console.log(request);
+
+        collection.doc().set(request);
+        history.push('/list');
     }
 
     function handleAddCharacter() {
@@ -132,9 +136,15 @@ export default function SubmitNewRequests(): JSX.Element {
             setRequest({ ...request, [name]: target.checked });
         }
         else if (name === 'archiveWarnings') {
-            if (request.archiveWarnings) {
+            if (request.archiveWarnings && !request.archiveWarnings.includes(value)) {
                 setRequest({ ...request, [name]: [...request.archiveWarnings, value] });
-            } else {
+            } else if (request.archiveWarnings && request.archiveWarnings.includes(value)) {
+                const req = request.archiveWarnings.filter(a => a !== value);
+                // console.log(request.archiveWarnings.filter(a => a !== value));
+                // console.log(req);
+                setRequest({ ...request, archiveWarnings: req });
+            }
+            else {
                 setRequest({ ...request, [name]: [value] });
             }
         }

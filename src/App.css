@@ -1,6 +1,7 @@
 :root {
     font-size: 16px;
-    --body-color: rgb(229, 233, 236)
+    --body-color: rgb(229, 233, 236);
+    --text-color: #282c34
 }
 
 body {
@@ -17,15 +18,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     font-size: calc(10px + 2vmin);
     color: white;
+}
+
+.App-header h1 {
+    margin: .2rem 0;
 }
 
 nav {
     background-color: rgb(109, 163, 218);
     width: 100%;
-    height: 4vh;
+    min-height: 3vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,14 +51,15 @@ nav li {
 
 nav li a {
     padding: .2rem 0;
-    font-size: 1rem;
-    width: 12rem;
+    font-size: .8rem;
+    width: 10rem;
+    min-height: 1rem;
     background-color: var(--body-color);
     margin: 0 .2rem;
     border-radius: .4rem .4rem 0 0;
     text-decoration: none;
     font-weight: 600;
-    color: #000;
+    color: var(--text-color);
 }
 
 .active {
@@ -62,11 +68,12 @@ nav li a {
 
 main {
     background-color: #fff;
-    min-height: 80vh;
+    min-height: 82vh;
     max-width: 70ch;
-    padding: 0 2ch;
+    padding: 2ch;
     margin: 2ch;
     margin: auto;
+    color: var(--text-color);
 }
 
 .App-link {
@@ -93,11 +100,15 @@ form>div {
     transition: all .3s ease-in-out;
 }
 
+.plus:hover {
+    filter: brightness(1.3);
+}
+
+.plus:focus {
+    outline: none;
+}
+
 .cross {
     transform: rotate(135deg);
     transform-origin: 50% 50%;
-}
-
-#plus:focus {
-    outline: none
 }
