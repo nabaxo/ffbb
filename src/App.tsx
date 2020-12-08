@@ -3,6 +3,7 @@ import './App.css';
 import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import SubmitNewRequests from './SubmitNewRequest';
+import Summaries from './Summaries';
 
 function App() {
     const history = createBrowserHistory();
@@ -10,7 +11,7 @@ function App() {
     return (
         <Router history={history}>
             <header className="App-header">
-                <h1>Fan Fic Big Bang</h1>
+                <h1>FanFic BigBang</h1>
                 <nav>
                     <ul>
                         <li>
@@ -28,7 +29,7 @@ function App() {
                         <Redirect to='/list' />
                     </Route>
                     <Route path='/list'>
-
+                        <Summaries />
                     </Route>
                     <Route path='/submit-new'>
                         <SubmitNewRequests />

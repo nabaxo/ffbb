@@ -1,11 +1,11 @@
 :root {
     font-size: 16px;
-    --body-color: rgb(229, 233, 236);
+    --animation: all .3s ease-in-out;
+    --body-color: #e5e9ec;
     --text-color: #282c34
 }
 
 body {
-    /* margin: 0; */
     background-color: var(--body-color);
 }
 
@@ -28,7 +28,7 @@ body {
 }
 
 nav {
-    background-color: rgb(109, 163, 218);
+    background-color: #6da3da;
     width: 100%;
     min-height: 3vh;
     display: flex;
@@ -40,7 +40,10 @@ nav {
 nav ul {
     display: flex;
     flex-direction: row;
-    margin: 0;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    padding: 0;
+    gap: 1rem;
 }
 
 nav li {
@@ -55,11 +58,11 @@ nav li a {
     width: 10rem;
     min-height: 1rem;
     background-color: var(--body-color);
-    margin: 0 .2rem;
     border-radius: .4rem .4rem 0 0;
     text-decoration: none;
     font-weight: 600;
     color: var(--text-color);
+    transition: var(--animation);
 }
 
 .active {
@@ -69,7 +72,8 @@ nav li a {
 main {
     background-color: #fff;
     min-height: 82vh;
-    max-width: 70ch;
+    min-width: 70ch;
+    width: fit-content;
     padding: 2ch;
     margin: 2ch;
     margin: auto;
@@ -80,6 +84,12 @@ main {
     color: #61dafb;
 }
 
+tr,
+th,
+td {
+    border-bottom: 1px solid #000;
+}
+
 .submit-form,
 .submit-form div {
     display: flex;
@@ -88,7 +98,19 @@ main {
 }
 
 form>div {
-    margin-top: .5rem;
+    margin-block-start: .5rem;
+}
+
+form>div>strong {
+    margin-block-end: .3rem;
+}
+
+.char-input {
+    width: 30vw;
+}
+
+.form-input {
+    width: 40vw;
 }
 
 .align-svg {
@@ -97,7 +119,7 @@ form>div {
 }
 
 .plus {
-    transition: all .3s ease-in-out;
+    transition: var(--animation);
 }
 
 .plus:hover {
@@ -111,4 +133,37 @@ form>div {
 .cross {
     transform: rotate(135deg);
     transform-origin: 50% 50%;
+}
+
+@media screen and (max-width: 576px) {
+    .App-header {
+        min-width: 100%;
+    }
+
+    main {
+        max-width: 100%;
+    }
+
+    nav ul {
+        gap: 0;
+    }
+
+    nav li a {
+        width: 8rem;
+    }
+
+    .pairings {
+        display: flex;
+        flex-direction: column;
+        margin-block-end: .5rem;
+    }
+
+    .char-input {
+        width: 80vw;
+    }
+
+    .form-input {
+        width: 85vw;
+    }
+
 }

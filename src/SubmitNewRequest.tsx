@@ -29,7 +29,7 @@ export default function SubmitNewRequests(): JSX.Element {
         if (!request.archiveWarnings || request.archiveWarnings.length === 0) {
             request.archiveWarnings = ['creator chose not to use archive warnings'];
         }
-        console.log(request);
+        // console.log(request);
 
         collection.doc().set(request);
         history.push('/list');
@@ -96,6 +96,7 @@ export default function SubmitNewRequests(): JSX.Element {
         return (
             <label key={i} className="align-svg">
                 <input
+                    className="char-input"
                     autoFocus={i === characters.length - 1}
                     name={String(i)} type="text" value={c}
                     onKeyPress={handleAddCharacterOnEnter}
@@ -117,7 +118,7 @@ export default function SubmitNewRequests(): JSX.Element {
             sign = <BiPlusCircle tabIndex={i} onClick={() => handleRemovePairing(i)} size="1.5rem" className="plus cross" color="red" />;
         }
         return (
-            <label key={i} className="align-svg">
+            <label key={i} className="align-svg pairings">
                 <input name={i + '-a'} type="text" value={c['a']} onChange={handleChangePairing} required={i === 0} />
                 <span style={{ padding: '0 .5rem' }}>✖</span>
                 <input name={i + '-b'} type="text" value={c['b']} onChange={handleChangePairing} required={i === 0} />
@@ -181,20 +182,24 @@ export default function SubmitNewRequests(): JSX.Element {
             <div><strong>Characters:</strong>
                 {charactersInputs}
             </div>
-            <div><strong>parings</strong>
+            <div><strong>Parings:</strong>
                 {pairingsInputs}
             </div>
             <div>
                 <strong>Tags (separate by comma)</strong>
-                <input type="text" name="tags" value={request.tags.join(',')} onChange={handleChange} />
+                <input
+                    className="form-input"
+                    type="text" name="tags"
+                    value={request.tags.join(',')} onChange={handleChange}
+                />
             </div>
             <div>
                 <strong>Author Warnings</strong>
-                <textarea name="authorWarnings" value={request?.authorWarnings} onChange={handleChange} />
+                <textarea className="form-input" name="authorWarnings" value={request?.authorWarnings} onChange={handleChange} />
             </div>
             <div>
                 <strong>Summary</strong>
-                <textarea name="summary" value={request?.summary} onChange={handleChange} />
+                <textarea className="form-input" rows={5} name="summary" value={request?.summary} onChange={handleChange} />
             </div>
             <div>
                 <strong>Tier:</strong>
