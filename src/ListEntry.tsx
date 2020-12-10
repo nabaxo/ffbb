@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import { entry } from './types';
 
 interface IProps {
+    id: string;
     entry: entry;
 }
 
-export default function ListEntry({ entry }: IProps) {
+export default function ListEntry({ id, entry }: IProps) {
     return (
         <tr>
-            <td></td>
+            <td>{id.substring(0, 5)}</td>
             <td>{entry.requestBeta ? 'Yes' : 'No'}</td>
             <td>{entry.ageRating}</td>
             <td>{entry.archiveWarnings}</td>

@@ -2,7 +2,8 @@
     font-size: 16px;
     --animation: all .3s ease-in-out;
     --body-color: #e5e9ec;
-    --text-color: #282c34
+    --text-color: #282c34;
+    --border: 1px solid #cecece;
 }
 
 body {
@@ -84,10 +85,58 @@ main {
     color: #61dafb;
 }
 
-tr,
+.entry-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filter {
+    width: 40rem;
+    padding: .5rem;
+    border-radius: .8rem;
+    border: var(--border);
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.filter:focus {
+    outline: none;
+}
+
+table {
+    margin-block: 1rem;
+    border-collapse: collapse;
+    border: var(--border) 0;
+    margin: 1rem;
+}
+
+thead tr {
+    background-color: #dedede !important;
+}
+
+tr:nth-child(odd) {
+    background-color: #fcfcfc;
+}
+
+tr:nth-child(even),
+thead tr {
+    background-color: #ececec;
+    border-block-start: var(--border);
+}
+
+tr {
+    margin-block-end: 10rem;
+}
+
+th {
+    padding-inline: 1rem;
+}
+
 th,
 td {
-    border-bottom: 1px solid #000;
+    border-bottom: var(--border);
+    padding: .5rem;
 }
 
 .submit-form,

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
 import { entry } from './types';
 import ListEntry from './ListEntry';
 
 export default function Summaries() {
-    const [list, setList] = useState<{ id: string, entry: entry; }[]>();
+    const [rawList, setRawList] = useState<{ id: string, entry: entry; }[]>();
+    const [filteredList, setFilteredList] = useState<{ id: string, entry: entry; }[]>();
 
     useEffect(() => {
         const collection = firebase.firestore().collection('requests');
@@ -16,17 +17,44 @@ export default function Summaries() {
                     entry: d.data() as entry
                 };
             });
-            setList(r);
+            setRawList(r);
         });
     }, []);
 
-    return list ?
-        <div>
-            <input type="text" placeholder="Filter" />
+    function handleFilter(event: ChangeEvent<HTMLInputElement>) {
+        if (rawList) {
+            const value = event.target.value.toLowerCase();
+
+            const filterList = rawList.filter(i => (
+                i.id.toLowerCase().includes(value) ||
+                i.entry.summary.toLowerCase().includes(value) ||
+                i.entry.characters.join(' ').toLowerCase().includes(value) ||
+                i.entry.tags.join(' ').toLowerCase().includes(value)
+            ));
+            if (value === '') {
+                setFilteredList(undefined);
+            } else {
+                setFilteredList(filterList);
+            }
+        }
+    }
+
+    const list = (() => {
+        if (filteredList) {
+            return filteredList;
+        }
+        else if (rawList) {
+            return rawList;
+        }
+    })();
+
+    return (
+        <div className="entry-list">
+            <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
             <table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Would you like a beta?</th>
                         <th>Rating</th>
                         <th>Archive Warnings</th>
@@ -39,9 +67,9 @@ export default function Summaries() {
                     </tr>
                 </thead>
                 <tbody>
-                    {list.map(e => <ListEntry key={e.id} entry={e.entry} />)}
+                    {list && list.map(e => <ListEntry key={e.id} id={e.id} entry={e.entry} />)}
                 </tbody>
             </table>
         </div>
-        : <div></div>;
+    );
 }
