@@ -25,3 +25,5 @@ yarn-error.log*
 
 # firebase secrets
 src/firebase-config.ts
+
+.eslintcache

@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export interface entry {
     // id: number,
     requestBeta: boolean,
@@ -25,3 +27,11 @@ export type pair = {
     a: string;
     b: string;
 };
+
+export interface event {
+    title: string;
+    fandom: string;
+    information: string;
+    startDate: firebase.firestore.Timestamp;
+    endDate: firebase.firestore.Timestamp;
+}

@@ -1,14 +1,18 @@
 import React, { ChangeEvent, useState } from 'react';
 import firebase from 'firebase/app';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 // import { entry } from './types';
 import { BiPlusCircle } from 'react-icons/bi';
-
 import { pair, entry } from './types';
 
+interface ParamTypes {
+    id: string;
+}
+
 export default function SubmitNewRequests(): JSX.Element {
+    const { id } = useParams<ParamTypes>();
     const history = useHistory();
-    const collection = firebase.firestore().collection('requests');
+    const collection = firebase.firestore().collection('events').doc(id).collection('requests');
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<entry>({

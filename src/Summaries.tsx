@@ -1,25 +1,32 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
-import { entry } from './types';
-import ListEntry from './ListEntry';
+import { entry, event } from './types';
+import RequestEntry from './RequestEntry';
+import { useParams, Link } from 'react-router-dom';
+
+interface ParamTypes {
+    id: string;
+}
 
 export default function Summaries() {
+    const { id } = useParams<ParamTypes>();
+    const [event, setEvent] = useState<event>();
     const [rawList, setRawList] = useState<{ id: string, entry: entry; }[]>();
     const [filteredList, setFilteredList] = useState<{ id: string, entry: entry; }[]>();
 
     useEffect(() => {
-        const collection = firebase.firestore().collection('requests');
+        const collection = firebase.firestore().collection('events').doc(id).collection('requests');
+        firebase.firestore().collection('events').doc(id).get().then((doc) => {
+            setEvent(doc.data() as event);
+        });
 
         return collection.onSnapshot((snapshot) => {
-            const r = snapshot.docs.map(d => {
-                return {
-                    id: d.id,
-                    entry: d.data() as entry
-                };
-            });
-            setRawList(r);
+            setRawList(snapshot.docs.map(d => ({
+                id: d.id,
+                entry: d.data() as entry
+            })));
         });
-    }, []);
+    }, [id]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
@@ -50,6 +57,8 @@ export default function Summaries() {
 
     return (
         <div className="entry-list">
+            {event && <div className="information-box">{event.information}</div>}
+            <Link to={'/event/' + id + '/submit'} >Submit new!</Link>
             <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
             <table>
                 <thead>
@@ -67,7 +76,7 @@ export default function Summaries() {
                     </tr>
                 </thead>
                 <tbody>
-                    {list && list.map(e => <ListEntry key={e.id} id={e.id} entry={e.entry} />)}
+                    {list && list.map(e => <RequestEntry key={e.id} id={e.id} entry={e.entry} />)}
                 </tbody>
             </table>
         </div>

@@ -4,6 +4,7 @@
     --body-color: #e5e9ec;
     --text-color: #282c34;
     --border: 1px solid #cecece;
+    --radius: 1ch;
 }
 
 body {
@@ -79,6 +80,14 @@ main {
     margin: 2ch;
     margin: auto;
     color: var(--text-color);
+}
+
+.information-box {
+    border: var(--border);
+    border-radius: var(--radius);
+    background-color: #f3e283;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 .App-link {

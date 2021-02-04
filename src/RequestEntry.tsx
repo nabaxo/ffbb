@@ -6,13 +6,13 @@ interface IProps {
     entry: entry;
 }
 
-export default function ListEntry({ id, entry }: IProps) {
+export default function RequestEntry({ id, entry }: IProps) {
     return (
         <tr>
             <td>{id.substring(0, 5)}</td>
             <td>{entry.requestBeta ? 'Yes' : 'No'}</td>
             <td>{entry.ageRating}</td>
-            <td>{entry.archiveWarnings}</td>
+            <td>{entry.archiveWarnings?.join(', ')}</td>
             <td>{entry.characters.join(', ')}</td>
             <td>{entry.pairings.map(p => { return [p.a, p.b].join(' x '); }).map((pair, i) => {
                 return (
