@@ -36,7 +36,7 @@ export default function SubmitNewRequests(): JSX.Element {
         // console.log(request);
 
         collection.doc().set(request);
-        history.push('/list');
+        history.push('/event/' + id);
     }
 
     function handleAddCharacter() {
@@ -62,9 +62,10 @@ export default function SubmitNewRequests(): JSX.Element {
     }
 
     function handleChangeCharacter(event: ChangeEvent<HTMLInputElement>) {
-        const list = [...characters];
-        list[Number(event.target.name)] = event.target.value;
-        setCharacters(list);
+        const characterList = [...characters];
+        characterList[Number(event.target.name)] = event.target.value;
+        setCharacters(characterList);
+        setRequest({ ...request, characters: characterList });
     }
 
     function handleAddPairing() {

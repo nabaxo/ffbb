@@ -31,7 +31,10 @@ export type pair = {
 export interface event {
     title: string;
     fandom: string;
+    summary: string;
     information: string;
     startDate: firebase.firestore.Timestamp;
     endDate: firebase.firestore.Timestamp;
+    creatorId: string;
+    creatorName: string;
 }

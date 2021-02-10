@@ -25,25 +25,25 @@ export default function Events() {
     return (
         <div>
             <div className="information-box">Log in to host your own Big Bang!</div>
-            <table>
+            <table className="event-list">
                 <thead>
                     <tr>
                         <th>Event</th>
                         <th>Fandom</th>
-                        <th>Information</th>
+                        <th>Summary</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {list && list.map(e => (
-                        <tr key={e.id} onClick={() => {
+                        <tr className="event-link" key={e.id} onClick={() => {
                             history.push('/event/' + e.id);
                             history.go(0);
                         }} >
                             <td>{e.event.title}</td>
                             <td>{e.event.fandom}</td>
-                            <td>{e.event.information}</td>
+                            <td>{e.event.summary}</td>
                             <td>{e.event.startDate.toDate().toLocaleDateString()}</td>
                             <td>{e.event.endDate.toDate().toLocaleDateString()}</td>
                         </tr>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
 import { entry, event } from './types';
 import RequestEntry from './RequestEntry';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 interface ParamTypes {
     id: string;
@@ -58,8 +58,10 @@ export default function Summaries() {
     return (
         <div className="entry-list">
             {event && <div className="information-box">{event.information}</div>}
-            <Link to={'/event/' + id + '/submit'} >Submit new!</Link>
-            <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
+            <span>
+                <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
+                <a className="submit-btn" href={'/event/' + id + '/submit'} >Submit New!</a>
+            </span>
             <table>
                 <thead>
                     <tr>

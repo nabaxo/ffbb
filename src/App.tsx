@@ -12,16 +12,18 @@ function App() {
     return (
         <Router history={history}>
             <header className="App-header">
-                <h1>FanFic BigBang</h1>
+                <h1>FFic BBang</h1>
                 <nav>
+                    {/*
                     <ul>
                         <li>
                             <NavLink activeClassName="active" to='/list'>List</NavLink>
                         </li>
-                        {/* <li>
+                        <li>
                             <NavLink activeClassName="active" to='/submit-new'>Submit Entry</NavLink>
-                        </li> */}
+                        </li>
                     </ul>
+                    */}
                 </nav>
             </header>
             <main>
