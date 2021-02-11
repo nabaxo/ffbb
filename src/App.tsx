@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Redirect, Route, Router, Switch } from 'react-router-dom';
+import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import firebase from 'firebase/app';
 import SubmitNewRequests from './SubmitNewRequest';
@@ -8,6 +8,7 @@ import Summaries from './Summaries';
 import Events from './Events';
 import { User } from './types';
 import Login from './Login';
+import CreateEvent from './CreateEvent';
 
 function App() {
     const history = createBrowserHistory();
@@ -32,47 +33,59 @@ function App() {
             <header className="App-header">
                 <h1>FFic BBang</h1>
                 <nav>
-                    {/*
+
                     <ul>
-                        <li>
+                        {/* <li>
                             <NavLink activeClassName="active" to='/list'>List</NavLink>
                         </li>
                         <li>
                             <NavLink activeClassName="active" to='/submit-new'>Submit Entry</NavLink>
-                        </li>
+                        </li> */}
+                        {!user && (
+                            <li>
+                                <NavLink activeClassName="active" to='/login'>Login</NavLink>
+                            </li>
+                        )}
+                        {user && (
+                            <li>
+                                <button onClick={() => {
+                                    firebase.auth().signOut();
+                                    history.push('/login');
+                                    history.go(0);
+                                }}>Log out</button>
+                            </li>
+                        )}
                     </ul>
-                    */}
+
                 </nav>
             </header>
             <main>
-                <Switch>
-                    {user && (
-                        <>
-                            <Route exact path='/'>
-                                <Redirect to='/list' />
-                            </Route>
-                            <Route path='/list'>
-                                <Events />
-                            </Route>
-                            <Route path='/event/:id/submit'>
-                                <SubmitNewRequests />
-                            </Route>
-                            <Route path='/event/:id'>
-                                <Summaries />
-                            </Route>
-                        </>
-                    )}
-                    {!user && (
-                        <>
-                            <Route exact path='/'>
-                                <Redirect to='/login' />
-                            </Route>
-                            <Route path='/login'>
-                                <Login />
-                            </Route>
-                        </>
-                    )}
-                </Switch>
+                {user && (
+                    <Switch>
+                        <Route exact path='/'>
+                            <Redirect to='/list' />
+                        </Route>
+                        <Route path='/list'>
+                            <Events />
+                        </Route>
+                        <Route path='/create-event'>
+                            <CreateEvent />
+                        </Route>
+                        <Route path='/event/:id/submit'>
+                            <SubmitNewRequests />
+                        </Route>
+                        <Route exact path='/event/:id'>
+                            <Summaries />
+                        </Route>
+                    </Switch>
+                )}
+                {!user && (
+                    <Switch>
+                        <Route path='/login'>
+                            <Login />
+                        </Route>
+                    </Switch>
+                )}
             </main>
         </Router>
     );

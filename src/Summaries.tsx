@@ -36,7 +36,8 @@ export default function Summaries() {
                 i.id.toLowerCase().includes(value) ||
                 i.entry.summary.toLowerCase().includes(value) ||
                 i.entry.characters.join(' ').toLowerCase().includes(value) ||
-                i.entry.tags.join(' ').toLowerCase().includes(value)
+                i.entry.tags.join(' ').toLowerCase().includes(value) ||
+                i.entry.archiveWarnings?.join(' ').toLowerCase().includes(value)
             ));
             if (value === '') {
                 setFilteredList(undefined);
@@ -58,7 +59,7 @@ export default function Summaries() {
     return (
         <div className="entry-list">
             {event && <div className="information-box">{event.information}</div>}
-            <span>
+            <span className="btn-row">
                 <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
                 <a className="submit-btn" href={'/event/' + id + '/submit'} >Submit New!</a>
             </span>

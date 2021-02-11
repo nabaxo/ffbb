@@ -22,7 +22,8 @@ export default function Login() {
                     };
                     collection.doc(authResult.user.uid).set(newUser);
                 }
-                history.push('/list');
+                // history.push('/list');
+                history.goBack();
                 return false;
             }
         },
@@ -30,7 +31,7 @@ export default function Login() {
 
     return (
         <div>
-            <div className="information-box">Log in to host or participate in a Big Bang!</div>
+            <div className="information-box">Login to host or participate in a Big Bang!</div>
             <StyledFirebaseAuth className="mt-5" uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         </div>
     );
