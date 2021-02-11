@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
-import { entry } from './types';
+import { Entry } from './types';
 
 interface IProps {
     id: string;
-    entry: entry;
+    entry: Entry;
 }
 
 export default function RequestEntry({ id, entry }: IProps) {

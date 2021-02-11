@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
-import { entry, event } from './types';
+import { Entry, Event } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
 
@@ -10,20 +10,20 @@ interface ParamTypes {
 
 export default function Summaries() {
     const { id } = useParams<ParamTypes>();
-    const [event, setEvent] = useState<event>();
-    const [rawList, setRawList] = useState<{ id: string, entry: entry; }[]>();
-    const [filteredList, setFilteredList] = useState<{ id: string, entry: entry; }[]>();
+    const [event, setEvent] = useState<Event>();
+    const [rawList, setRawList] = useState<{ id: string, entry: Entry; }[]>();
+    const [filteredList, setFilteredList] = useState<{ id: string, entry: Entry; }[]>();
 
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(id).collection('requests');
         firebase.firestore().collection('events').doc(id).get().then((doc) => {
-            setEvent(doc.data() as event);
+            setEvent(doc.data() as Event);
         });
 
         return collection.onSnapshot((snapshot) => {
             setRawList(snapshot.docs.map(d => ({
                 id: d.id,
-                entry: d.data() as entry
+                entry: d.data() as Entry
             })));
         });
     }, [id]);

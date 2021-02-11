@@ -256,3 +256,13 @@ form>div>strong {
     }
 
 }
+
+/* Some trickery */
+label[for="ui-sign-in-name-input"] {
+    visibility: hidden !important;
+}
+
+label[for="ui-sign-in-name-input"]::before {
+    content: "Username";
+    visibility: visible;
+}

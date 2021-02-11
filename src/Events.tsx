@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
-import { event } from './types';
+import { Event } from './types';
 import { useHistory } from 'react-router-dom';
 
 
 export default function Events() {
-    const [list, setList] = useState<{ id: string, event: event; }[]>();
+    const [list, setList] = useState<{ id: string, event: Event; }[]>();
     const history = useHistory();
 
     useEffect(() => {
@@ -15,16 +15,15 @@ export default function Events() {
             const r = snapshot.docs.map(d => {
                 return {
                     id: d.id,
-                    event: d.data() as event
+                    event: d.data() as Event
                 };
             });
             setList(r);
         });
-    });
+    }, []);
 
     return (
         <div>
-            <div className="information-box">Log in to host your own Big Bang!</div>
             <table className="event-list">
                 <thead>
                     <tr>
@@ -37,6 +36,7 @@ export default function Events() {
                 </thead>
                 <tbody>
                     {list && list.map(e => (
+                        e.event.public &&
                         <tr className="event-link" key={e.id} onClick={() => {
                             history.push('/event/' + e.id);
                             history.go(0);

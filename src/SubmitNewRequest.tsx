@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { useHistory, useParams } from 'react-router-dom';
 // import { entry } from './types';
 import { BiPlusCircle } from 'react-icons/bi';
-import { pair, entry } from './types';
+import { Pair, Entry } from './types';
 
 interface ParamTypes {
     id: string;
@@ -14,8 +14,8 @@ export default function SubmitNewRequests(): JSX.Element {
     const history = useHistory();
     const collection = firebase.firestore().collection('events').doc(id).collection('requests');
     const [characters, setCharacters] = useState<string[]>(['']);
-    const [pairings, setPairings] = useState<pair[]>([{ a: '', b: '' }]);
-    const [request, setRequest] = useState<entry>({
+    const [pairings, setPairings] = useState<Pair[]>([{ a: '', b: '' }]);
+    const [request, setRequest] = useState<Entry>({
         requestBeta: false,
         ageRating: 'G-T',
         authorRequestAge: false,

@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 
-export interface entry {
+export interface Entry {
     // id: number,
     requestBeta: boolean,
     ageRating: 'G-T' | 'E-M',
@@ -15,7 +15,7 @@ export interface entry {
         "underage"
     )[];
     characters: string[];
-    pairings: pair[];
+    pairings: Pair[];
     tags: string[];
     authorWarnings: string;
     summary: string,
@@ -23,12 +23,12 @@ export interface entry {
     isPublished: boolean;
 }
 
-export type pair = {
+export type Pair = {
     a: string;
     b: string;
 };
 
-export interface event {
+export interface Event {
     title: string;
     fandom: string;
     summary: string;
@@ -37,4 +37,12 @@ export interface event {
     endDate: firebase.firestore.Timestamp;
     creatorId: string;
     creatorName: string;
+    public: boolean;
+}
+
+export interface User {
+    uid: string;
+    displayName: string;
+    createdEvents?: string[];
+    joinedEvents?: string[];
 }
