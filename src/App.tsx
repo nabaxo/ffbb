@@ -29,7 +29,7 @@ function App() {
     }, []);
 
     return (
-        <Router history={history}>
+        <Router history={history} >
             <header className="App-header">
                 <h1>FFic BBang</h1>
                 <nav>
@@ -47,13 +47,22 @@ function App() {
                             </li>
                         )}
                         {user && (
-                            <li>
-                                <button onClick={() => {
-                                    firebase.auth().signOut();
-                                    history.push('/login');
-                                    history.go(0);
-                                }}>Log out</button>
-                            </li>
+                            <>
+                                <li onClick={() => history.go(0)}>
+                                    <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
+                                </li>
+                                <li onClick={() => history.go(0)}>
+                                    <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
+                                </li>
+                                <li>Welcome {firebase.auth().currentUser?.displayName}</li>
+                                <li>
+                                    <button onClick={() => {
+                                        firebase.auth().signOut();
+                                        history.push('/login');
+                                        history.go(0);
+                                    }}>Log out</button>
+                                </li>
+                            </>
                         )}
                     </ul>
 

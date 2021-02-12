@@ -124,9 +124,9 @@ export default function SubmitNewRequests(): JSX.Element {
         }
         return (
             <label key={i} className="align-svg pairings">
-                <input name={i + '-a'} type="text" value={c['a']} onChange={handleChangePairing} required={i === 0} />
+                <input className="pair-input" name={i + '-a'} type="text" value={c['a']} onChange={handleChangePairing} required={i === 0} />
                 <span style={{ padding: '0 .5rem' }}>✖</span>
-                <input name={i + '-b'} type="text" value={c['b']} onChange={handleChangePairing} required={i === 0} />
+                <input className="pair-input" name={i + '-b'} type="text" value={c['b']} onChange={handleChangePairing} required={i === 0} />
                 {sign}
             </label>
         );
@@ -214,7 +214,7 @@ export default function SubmitNewRequests(): JSX.Element {
                 </select>
             </div>
             <div>
-                <input type="submit" value="Submit request" />
+                <input type="submit" value="Submit Request" />
             </div>
         </form>
     );

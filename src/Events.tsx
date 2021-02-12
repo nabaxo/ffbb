@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
-import { Event } from './types';
+import { Bang } from './types';
 import { useHistory } from 'react-router-dom';
 
 
 export default function Events() {
-    const [list, setList] = useState<{ id: string, event: Event; }[]>();
+    const [list, setList] = useState<{ id: string, event: Bang; }[]>();
     const history = useHistory();
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function Events() {
             const r = snapshot.docs.map(d => {
                 return {
                     id: d.id,
-                    event: d.data() as Event
+                    event: d.data() as Bang
                 };
             });
             setList(r);

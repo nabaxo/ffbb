@@ -28,7 +28,7 @@ export type Pair = {
     b: string;
 };
 
-export interface Event {
+export interface Bang {
     title: string;
     fandom: string;
     summary: string;

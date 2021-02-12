@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
-import { Entry, Event } from './types';
+import { Entry, Bang } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
 
@@ -10,14 +10,14 @@ interface ParamTypes {
 
 export default function Summaries() {
     const { id } = useParams<ParamTypes>();
-    const [event, setEvent] = useState<Event>();
+    const [event, setEvent] = useState<Bang>();
     const [rawList, setRawList] = useState<{ id: string, entry: Entry; }[]>();
     const [filteredList, setFilteredList] = useState<{ id: string, entry: Entry; }[]>();
 
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(id).collection('requests');
         firebase.firestore().collection('events').doc(id).get().then((doc) => {
-            setEvent(doc.data() as Event);
+            setEvent(doc.data() as Bang);
         });
 
         return collection.onSnapshot((snapshot) => {
