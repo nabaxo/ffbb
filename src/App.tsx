@@ -9,6 +9,7 @@ import Events from './Events';
 import { User } from './types';
 import Login from './Login';
 import CreateEvent from './CreateEvent';
+import Settings from './Settings';
 
 function App() {
     const history = createBrowserHistory();
@@ -54,7 +55,12 @@ function App() {
                                 <li onClick={() => history.go(0)}>
                                     <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
                                 </li>
-                                <li>Welcome {firebase.auth().currentUser?.displayName}</li>
+                                <li onClick={() => history.go(0)}>
+                                    <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
+                                </li>
+                                <li>
+                                    Welcome {firebase.auth().currentUser?.displayName}
+                                </li>
                                 <li>
                                     <button onClick={() => {
                                         firebase.auth().signOut();
@@ -79,6 +85,9 @@ function App() {
                         </Route>
                         <Route path='/create-event'>
                             <CreateEvent />
+                        </Route>
+                        <Route path='/settings'>
+                            <Settings />
                         </Route>
                         <Route path='/event/:id/submit'>
                             <SubmitNewRequests />
