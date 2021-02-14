@@ -198,7 +198,7 @@ export default function SubmitNewRequests(): JSX.Element {
                 />
             </div>
             <div>
-                <strong>Author Warnings</strong>
+                <strong>Anything you'd like us to know?</strong>
                 <textarea className="form-input" name="authorWarnings" value={request?.authorWarnings} onChange={handleChange} />
             </div>
             <div>

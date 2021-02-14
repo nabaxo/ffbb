@@ -6,14 +6,14 @@ interface IProps {
     entryId: string;
     entry: Entry;
     moderators?: string[];
-    eid: string;
+    eventId: string;
 }
 
-export default function RequestEntry({ entryId, entry, moderators, eid }: IProps) {
+export default function RequestEntry({ entryId, entry, moderators, eventId }: IProps) {
     const user = firebase.auth().currentUser;
     const uid = user?.uid;
     const isModerator = moderators && uid && moderators.includes(uid);
-    const collection = firebase.firestore().collection('events').doc(eid).collection('requests');
+    const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
     function approve() {
@@ -33,13 +33,13 @@ export default function RequestEntry({ entryId, entry, moderators, eid }: IProps
     }
 
     useEffect(() => {
-        const docRef = firebase.firestore().collection('users').doc(uid);
+        const docRef = firebase.firestore().collection('users').doc(entry.uid);
 
         docRef.get().then((doc) => {
             setRequestUser(doc.data() as User);
         });
 
-    }, [uid]);
+    }, [entry.uid]);
 
     return (
         <>

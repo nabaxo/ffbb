@@ -84,7 +84,7 @@ export default function Summaries() {
                         entryId={e.id}
                         entry={e.entry}
                         moderators={event?.moderators}
-                        eid={id}
+                        eventId={id}
                     />)}
                 </tbody>
             </table>
