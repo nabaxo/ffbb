@@ -7,7 +7,6 @@ export default function Settings() {
         bid: string,
         bang: Bang;
     }[]>();
-    // const [userBangs, setUserBangs] = useState([]);
     const creatorId = firebase.auth().currentUser?.uid;
 
     useEffect(() => {

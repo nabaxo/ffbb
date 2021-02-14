@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 
 export interface Entry {
-    // id: number,
+    uid: string,
     requestBeta: boolean,
     ageRating: 'G-T' | 'E-M',
     authorRequestAge: boolean;
@@ -38,6 +38,7 @@ export interface Bang {
     creatorId: string;
     creatorName: string;
     public: boolean;
+    moderators: string[];
 }
 
 export interface User {

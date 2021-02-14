@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import firebase from 'firebase/app';
 import { useHistory, useParams } from 'react-router-dom';
-// import { entry } from './types';
 import { BiPlusCircle } from 'react-icons/bi';
 import { Pair, Entry } from './types';
 
@@ -13,9 +12,12 @@ export default function SubmitNewRequests(): JSX.Element {
     const { id } = useParams<ParamTypes>();
     const history = useHistory();
     const collection = firebase.firestore().collection('events').doc(id).collection('requests');
+    const user = firebase.auth().currentUser;
+    const uid = user?.uid;
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<Pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<Entry>({
+        uid: uid ? uid : '',
         requestBeta: false,
         ageRating: 'G-T',
         authorRequestAge: false,
@@ -37,6 +39,7 @@ export default function SubmitNewRequests(): JSX.Element {
 
         collection.doc().set(request);
         history.push('/event/' + id);
+        history.go(0);
     }
 
     function handleAddCharacter() {

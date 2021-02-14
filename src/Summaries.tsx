@@ -21,6 +21,7 @@ export default function Summaries() {
         });
 
         return collection.onSnapshot((snapshot) => {
+            // return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
             setRawList(snapshot.docs.map(d => ({
                 id: d.id,
                 entry: d.data() as Entry
@@ -79,7 +80,13 @@ export default function Summaries() {
                     </tr>
                 </thead>
                 <tbody>
-                    {list && list.map(e => <RequestEntry key={e.id} id={e.id} entry={e.entry} />)}
+                    {list && list.map(e => <RequestEntry
+                        key={e.id}
+                        entryId={e.id}
+                        entry={e.entry}
+                        moderators={event?.moderators}
+                        eid={id}
+                    />)}
                 </tbody>
             </table>
         </div>

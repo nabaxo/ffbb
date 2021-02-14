@@ -17,7 +17,8 @@ export default function CreateEvent() {
         endDate: firebase.firestore.Timestamp.fromDate(new Date()),
         creatorId: creatorId ? creatorId : '',
         creatorName: creatorName ? creatorName : '',
-        public: false
+        public: false,
+        moderators: [creatorId ? creatorId : '',]
     });
 
 

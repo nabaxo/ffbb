@@ -159,8 +159,16 @@ thead tr {
     border-block-start: var(--border);
 }
 
+.not-approved {
+    background-color: #df8b96 !important;
+}
+
 tr {
     margin-block-end: 10rem;
+}
+
+tr:hover {
+    filter: brightness(.9);
 }
 
 table thead th {
@@ -204,6 +212,7 @@ form>div>strong {
 
 .char-input {
     width: 30vw;
+    margin-block-end: .5rem;
 }
 
 .form-input {
