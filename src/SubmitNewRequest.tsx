@@ -35,7 +35,6 @@ export default function SubmitNewRequests(): JSX.Element {
         if (!request.archiveWarnings || request.archiveWarnings.length === 0) {
             request.archiveWarnings = ['creator chose not to use archive warnings'];
         }
-        // console.log(request);
 
         collection.doc().set(request);
         history.push('/event/' + id);
@@ -118,7 +117,6 @@ export default function SubmitNewRequests(): JSX.Element {
 
     const pairingsInputs = pairings.map((c, i) => {
         let sign: JSX.Element;
-        // console.log(c);
         if (i === pairings.length - 1) {
             sign = <BiPlusCircle tabIndex={i} onClick={handleAddPairing} size="1.5rem" className="plus" transform="rotate(0)" color="green" />;
         }
@@ -149,8 +147,6 @@ export default function SubmitNewRequests(): JSX.Element {
                 setRequest({ ...request, [name]: [...request.archiveWarnings, value] });
             } else if (request.archiveWarnings && request.archiveWarnings.includes(value)) {
                 const req = request.archiveWarnings.filter(a => a !== value);
-                // console.log(request.archiveWarnings.filter(a => a !== value));
-                // console.log(req);
                 setRequest({ ...request, archiveWarnings: req });
             }
             else {

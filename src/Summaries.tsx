@@ -21,7 +21,6 @@ export default function Summaries() {
         });
 
         return collection.onSnapshot((snapshot) => {
-            // return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
             setRawList(snapshot.docs.map(d => ({
                 id: d.id,
                 entry: d.data() as Entry

@@ -22,7 +22,6 @@ export default function Login() {
                     };
                     collection.doc(authResult.user.uid).set(newUser);
                 }
-                // history.push('/list');
                 history.goBack();
                 return false;
             }
