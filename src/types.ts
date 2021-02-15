@@ -46,4 +46,5 @@ export interface User {
     displayName: string;
     email: string;
     joinedEvents: string[];
+    createdEvents: string[];
 }

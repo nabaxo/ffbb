@@ -7,7 +7,8 @@ export default function CreateEvent() {
     const collection = firebase.firestore().collection('events');
     const history = useHistory();
     const creatorName = firebase.auth().currentUser?.displayName;
-    const creatorId = firebase.auth().currentUser?.uid;
+    const uid = firebase.auth().currentUser?.uid;
+    const userDocRef = firebase.firestore().collection('users').doc(uid);
     const [bang, setBang] = useState<Bang>({
         title: '',
         fandom: '',
@@ -15,10 +16,10 @@ export default function CreateEvent() {
         information: '',
         startDate: firebase.firestore.Timestamp.fromDate(new Date()),
         endDate: firebase.firestore.Timestamp.fromDate(new Date()),
-        creatorId: creatorId ? creatorId : '',
+        creatorId: uid ? uid : '',
         creatorName: creatorName ? creatorName : '',
         public: false,
-        moderators: [creatorId ? creatorId : '',]
+        moderators: [uid ? uid : '',]
     });
 
 
@@ -27,6 +28,9 @@ export default function CreateEvent() {
         console.log(bang);
 
         collection.add(bang).then((docRef) => {
+            userDocRef.update({
+                createdEvents: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            });
             history.push('/event/' + docRef.id);
         });
     }

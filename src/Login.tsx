@@ -20,7 +20,8 @@ export default function Login() {
                         uid: authResult.user.uid,
                         displayName: authResult.user.displayName,
                         email: authResult.user.email,
-                        joinedEvents: []
+                        joinedEvents: [],
+                        createdEvents: [],
                     };
                     collection.doc(authResult.user.uid).set(newUser);
                 }
