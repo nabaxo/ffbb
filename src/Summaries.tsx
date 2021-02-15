@@ -58,36 +58,38 @@ export default function Summaries() {
 
     return (
         <div className="entry-list">
-            {event && <div className="information-box">{event.information}</div>}
-            <span className="btn-row">
-                <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                <a className="submit-btn" href={'/event/' + id + '/submit'} >Submit New!</a>
-            </span>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Would you like a beta?</th>
-                        <th>Rating</th>
-                        <th>Archive Warnings</th>
-                        <th>Characters</th>
-                        <th>Pairings</th>
-                        <th>Tags</th>
-                        <th>Summary</th>
-                        <th>Tier</th>
-                        <th>Anything you'd like us to know?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {list && list.map(e => <RequestEntry
-                        key={e.id}
-                        entryId={e.id}
-                        entry={e.entry}
-                        moderators={event?.moderators}
-                        eventId={id}
-                    />)}
-                </tbody>
-            </table>
+            {event && <>
+                <div className="information-box">{event.information}</div>
+                <span className="btn-row">
+                    <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
+                    <a className="submit-btn" href={'/event/' + id + '/submit'} >Submit New!</a>
+                </span>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Would you like a beta?</th>
+                            <th>Rating</th>
+                            <th>Archive Warnings</th>
+                            <th>Characters</th>
+                            <th>Pairings</th>
+                            <th>Tags</th>
+                            <th>Summary</th>
+                            <th>Tier</th>
+                            <th>Anything you'd like us to know?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list && list.map(e => <RequestEntry
+                            key={e.id}
+                            entryId={e.id}
+                            entry={e.entry}
+                            moderators={event?.moderators}
+                            eventId={id}
+                        />)}
+                    </tbody>
+                </table>
+            </>}
         </div>
     );
 }

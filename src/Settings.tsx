@@ -61,16 +61,31 @@ export default function Settings() {
         });
     }, [userId]);
 
+    function deleteEvent(eventId: string) {
+        if (window.confirm('This cannot be undone! Are you sure!?')) {
+            const collection = firebase.firestore().collection('events');
+
+            collection.doc(eventId).delete();
+        }
+    }
+
     return (
         <div>
             <h4>My events</h4>
             {createdBangs && createdBangs.length !== 0 ?
                 <div>
-                    <ul>
-                        {createdBangs.map(b => {
-                            return <li key={b.bid}><a href={'event/' + b.bid}>{b.bang.title}</a></li>;
-                        })}
-                    </ul>
+                    <table>
+                        <tbody>
+                            {createdBangs.map(b => {
+                                return (
+                                    <tr key={b.bid}>
+                                        <td><a href={'event/' + b.bid}>{b.bang.title}</a></td>
+                                        <td><button onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
                 </div>
                 :
                 <div>You haven't created any events!</div>
