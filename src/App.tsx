@@ -107,6 +107,9 @@ function App() {
                     </Switch>
                 )}
             </main>
+            <footer>
+                <span>This app is open source, check us out on <a href="https://github.com/nabaxo/ffbb">Github</a>!</span>
+            </footer>
         </Router>
     );
 }

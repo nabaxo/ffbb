@@ -84,13 +84,27 @@ nav li a:hover,
 
 main {
     background-color: var(--light);
-    min-height: 82vh;
+    min-height: 80vh;
     min-width: 70ch;
     width: fit-content;
     padding: 2ch;
     margin: 2ch;
     margin: auto;
     color: var(--text-color);
+}
+
+footer {
+    background-color: var(--dark);
+    color: var(--light) !important;
+    width: fit-content;
+    padding: 2ch;
+    margin: 2ch;
+    margin: auto;
+    color: var(--text-color);
+}
+
+footer a {
+    color: var(--blue);
 }
 
 .information-box {
