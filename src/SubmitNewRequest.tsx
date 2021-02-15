@@ -210,13 +210,13 @@ export default function SubmitNewRequests(): JSX.Element {
             </div>
             <div>
                 <strong>Tier:</strong>
-                <select name="tier" id="tier" onChange={handleChange}>
+                <select className="form-input" name="tier" id="tier" onChange={handleChange}>
                     <option value="1">Tier 1</option>
                     <option value="2">Tier 2</option>
                 </select>
             </div>
             <div>
-                <input type="submit" value="Submit Request" />
+                <input className="btn btn-approve" type="submit" value="Submit Request" />
             </div>
         </form>
     );

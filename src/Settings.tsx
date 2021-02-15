@@ -80,7 +80,7 @@ export default function Settings() {
                                 return (
                                     <tr key={b.bid}>
                                         <td><a href={'event/' + b.bid}>{b.bang.title}</a></td>
-                                        <td><button onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
+                                        <td><button className="btn btn-delete" onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
                                     </tr>
                                 );
                             })}

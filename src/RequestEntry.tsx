@@ -66,8 +66,8 @@ export default function RequestEntry({ entryId, entry, moderators, eventId }: IP
                 </tr>)}
             {isModerator && (
                 <tr>
-                    <td><button onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
-                    <td><button onClick={confirmDialog}>Delete</button></td>
+                    <td><button className={entry.isPublished ? 'btn btn-warning' : 'btn btn-approve'} onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
+                    <td><button className="btn btn-delete" onClick={confirmDialog}>Delete</button></td>
                     <td colSpan={8}>Submitted by: {requestUser && requestUser.displayName}</td>
                 </tr>
             )}

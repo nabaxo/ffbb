@@ -121,7 +121,7 @@ export default function CreateEvent() {
                     type="checkbox" />Yes</label>
             </div>
             <div>
-                <input type="submit" value="Create Event" />
+                <input className="btn btn-create" type="submit" value="Create Event" />
             </div>
         </form>
     );

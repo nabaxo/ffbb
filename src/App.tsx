@@ -63,10 +63,12 @@ function App() {
                                     Welcome {firebase.auth().currentUser?.displayName}
                                 </li>
                                 <li>
-                                    <button onClick={() => {
-                                        firebase.auth().signOut();
-                                        history.push('/login');
-                                    }}>Log out</button>
+                                    <button
+                                        className="btn btn-warning"
+                                        onClick={() => {
+                                            firebase.auth().signOut();
+                                            history.push('/login');
+                                        }}>Log out</button>
                                 </li>
                             </>
                         )}

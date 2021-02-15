@@ -62,7 +62,7 @@ export default function Summaries() {
                 <div className="information-box">{event.information}</div>
                 <span className="btn-row">
                     <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                    <a className="submit-btn" href={'/event/' + id + '/submit'} >Submit New!</a>
+                    <a className="btn btn-submit" href={'/event/' + id + '/submit'} >Submit New!</a>
                 </span>
                 <table>
                     <thead>

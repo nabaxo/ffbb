@@ -24,7 +24,7 @@ export default function Events() {
 
     return (
         <div>
-            <a className="submit-btn" href={'/create-event'} >Create Bang!</a>
+            <a className="btn btn-submit" href={'/create-event'} >Create Bang!</a>
             <table className="event-list">
                 <thead>
                     <tr>
