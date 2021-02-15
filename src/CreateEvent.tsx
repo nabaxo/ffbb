@@ -28,7 +28,6 @@ export default function CreateEvent() {
 
         collection.add(bang).then((docRef) => {
             history.push('/event/' + docRef.id);
-            history.go(0);
         });
     }
 

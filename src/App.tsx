@@ -11,8 +11,9 @@ import Login from './Login';
 import CreateEvent from './CreateEvent';
 import Settings from './Settings';
 
+const history = createBrowserHistory();
+
 function App() {
-    const history = createBrowserHistory();
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
@@ -49,13 +50,13 @@ function App() {
                         )}
                         {user && (
                             <>
-                                <li onClick={() => history.go(0)}>
+                                <li>
                                     <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
                                 </li>
-                                <li onClick={() => history.go(0)}>
+                                <li>
                                     <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
                                 </li>
-                                <li onClick={() => history.go(0)}>
+                                <li>
                                     <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
                                 </li>
                                 <li>
@@ -65,7 +66,6 @@ function App() {
                                     <button onClick={() => {
                                         firebase.auth().signOut();
                                         history.push('/login');
-                                        history.go(0);
                                     }}>Log out</button>
                                 </li>
                             </>

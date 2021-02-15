@@ -40,7 +40,6 @@ export default function Events() {
                         e.event.public &&
                         <tr className="event-link" key={e.id} onClick={() => {
                             history.push('/event/' + e.id);
-                            history.go(0);
                         }} >
                             <td>{e.event.title}</td>
                             <td>{e.event.fandom}</td>

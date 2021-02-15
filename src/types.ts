@@ -44,6 +44,6 @@ export interface Bang {
 export interface User {
     uid: string;
     displayName: string;
-    createdEvents?: string[];
-    joinedEvents?: string[];
+    email: string;
+    joinedEvents: string[];
 }

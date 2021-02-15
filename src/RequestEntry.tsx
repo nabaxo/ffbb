@@ -10,9 +10,8 @@ interface IProps {
 }
 
 export default function RequestEntry({ entryId, entry, moderators, eventId }: IProps) {
-    const user = firebase.auth().currentUser;
-    const uid = user?.uid;
-    const isModerator = moderators && uid && moderators.includes(uid);
+    const moderatorId = firebase.auth().currentUser?.uid;
+    const isModerator = moderators && moderatorId && moderators.includes(moderatorId);
     const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
@@ -27,7 +26,7 @@ export default function RequestEntry({ entryId, entry, moderators, eventId }: IP
     }
 
     function confirmDialog() {
-        if (window.confirm('Are you sure you want to delete this request?')) {
+        if (window.confirm('Are you sure you want to delete this request?\nThis cannot be undone!')) {
             removeEntry();
         }
     }

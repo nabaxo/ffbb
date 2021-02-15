@@ -14,6 +14,7 @@ export default function SubmitNewRequests(): JSX.Element {
     const collection = firebase.firestore().collection('events').doc(id).collection('requests');
     const user = firebase.auth().currentUser;
     const uid = user?.uid;
+    const userDocRef = firebase.firestore().collection('users').doc(uid);
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<Pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<Entry>({
@@ -37,8 +38,10 @@ export default function SubmitNewRequests(): JSX.Element {
         }
 
         collection.doc().set(request);
+        userDocRef.update({
+            joinedEvents: firebase.firestore.FieldValue.arrayUnion(id)
+        });
         history.push('/event/' + id);
-        history.go(0);
     }
 
     function handleAddCharacter() {
@@ -203,7 +206,7 @@ export default function SubmitNewRequests(): JSX.Element {
             </div>
             <div>
                 <strong>Summary</strong>
-                <textarea className="form-input" rows={5} name="summary" value={request?.summary} onChange={handleChange} />
+                <textarea className="form-input" rows={5} name="summary" value={request?.summary} onChange={handleChange} required />
             </div>
             <div>
                 <strong>Tier:</strong>

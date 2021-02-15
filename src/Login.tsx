@@ -19,6 +19,8 @@ export default function Login() {
                     const newUser: User = {
                         uid: authResult.user.uid,
                         displayName: authResult.user.displayName,
+                        email: authResult.user.email,
+                        joinedEvents: []
                     };
                     collection.doc(authResult.user.uid).set(newUser);
                 }
