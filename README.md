@@ -30,4 +30,4 @@ Please refer to the [Create React App documentation](https://facebook.github.io/
 
 ## License
 
-FFic Bbang is open source software [licensed as MIT](https://github.com/facebook/create-react-app/blob/master/LICENSE).
+FFic Bbang is open source software [licensed as GPLv3](https://github.com/nabaxo/ffbb/blob/main/LICENSE).
