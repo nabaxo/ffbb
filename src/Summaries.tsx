@@ -13,6 +13,8 @@ export default function Summaries() {
     const [event, setEvent] = useState<Bang>();
     const [rawList, setRawList] = useState<{ id: string, entry: Entry; }[]>();
     const [filteredList, setFilteredList] = useState<{ id: string, entry: Entry; }[]>();
+    const uid = firebase.auth().currentUser?.uid;
+    const isModerator = event && uid && event.moderators.includes(uid);
 
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(id).collection('requests');
@@ -76,7 +78,7 @@ export default function Summaries() {
                             <th>Tags</th>
                             <th>Summary</th>
                             <th>Tier</th>
-                            <th>Anything you'd like us to know?</th>
+                            {isModerator && <th>Anything you'd like us to know?</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +86,7 @@ export default function Summaries() {
                             key={e.id}
                             entryId={e.id}
                             entry={e.entry}
-                            moderators={event?.moderators}
+                            isModerator={isModerator ? true : false}
                             eventId={id}
                         />)}
                     </tbody>

@@ -112,7 +112,7 @@ footer a {
     border-radius: var(--radius);
     background-color: var(--yellow-light);
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin-block-end: 1rem;
 }
 
 .App-link {
@@ -175,7 +175,7 @@ footer a {
     border: var(--border);
     font-size: 1.2rem;
     text-align: center;
-    margin-right: 1rem;
+    margin-inline-end: 1rem;
 }
 
 .filter:focus {
@@ -193,15 +193,25 @@ thead tr {
     background-color: #dedede !important;
 }
 
+table thead th {
+    padding-inline: 1rem;
+    border-bottom: var(--border);
+    background-color: #ececec;
+    position: sticky;
+    top: 0;
+    margin-block-start: -1px;
+    z-index: 100;
+}
+
 tr:nth-child(odd) {
     background-color: #fcfcfc;
 }
 
-tr:nth-child(even),
-thead tr {
-    background-color: #ececec;
+tr:nth-child(even) {
     border-block-start: var(--border);
+    background-color: #f5f5f5;
 }
+
 
 .not-approved {
     background-color: #f0bec4 !important;
@@ -211,20 +221,15 @@ tr {
     margin-block-end: 10rem;
 }
 
-tr:hover {
+tr:hover:not(thead tr, .mod-bar) {
     filter: brightness(.9);
-}
-
-table thead th {
-    padding-inline: 1rem;
-    position: sticky;
-    border-bottom: var(--border);
 }
 
 th,
 td {
     padding: .5rem;
 }
+
 
 .event-list {
     min-width: 100%;

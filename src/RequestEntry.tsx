@@ -5,13 +5,11 @@ import firebase from 'firebase/app';
 interface IProps {
     entryId: string;
     entry: Entry;
-    moderators?: string[];
     eventId: string;
+    isModerator?: boolean;
 }
 
-export default function RequestEntry({ entryId, entry, moderators, eventId }: IProps) {
-    const moderatorId = firebase.auth().currentUser?.uid;
-    const isModerator = moderators && moderatorId && moderators.includes(moderatorId);
+export default function RequestEntry({ entryId, entry, isModerator, eventId }: IProps) {
     const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
@@ -62,10 +60,10 @@ export default function RequestEntry({ entryId, entry, moderators, eventId }: IP
                         {entry.summary}
                     </p></td>
                     <td>{entry.tier}</td>
-                    <td>{entry.authorWarnings}</td>
+                    {isModerator && <td>{entry.authorWarnings}</td>}
                 </tr>)}
             {isModerator && (
-                <tr>
+                <tr className="mod-bar">
                     <td><button className={entry.isPublished ? 'btn btn-warning' : 'btn btn-approve'} onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
                     <td><button className="btn btn-delete" onClick={confirmDialog}>Delete</button></td>
                     <td colSpan={8}>Submitted by: {requestUser && requestUser.displayName}</td>
