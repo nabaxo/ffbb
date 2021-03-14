@@ -28,7 +28,6 @@ src/firebase-config.ts
 
 # misc Firebase stuff
 .firebaserc
-firebase.json
 .firebase/
 
 .eslintcache
