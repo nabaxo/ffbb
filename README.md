@@ -1,4 +1,4 @@
-# FFic BBang - A tool for organising bang events for fan fic fandoms.
+# FFic BBang - A tool for organising bang events for fanfic communities.
 
 This is the source code, enjoy! It's built with React, Create-React-App, TypeScript, and Firebase.
 
@@ -8,10 +8,23 @@ If you wanna run it yourself, follow these steps.
 
 1. Create a Firebase web-app
 2. Clone the repo
-3. Create src/firebaseConfig.ts and export your Firebase-secret as firebaseConfig
+3. Create src/firebaseConfig.ts with content like this:
+    ```typescript
+    export var firebaseConfig = {
+        apiKey: "",
+        authDomain: "",
+        databaseURL: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
+    }
+    ```
 4. Run `npm install`
 5. Run `npm start`
 6. Enjoy!
+
+**_NOTE_: If you want the Github Action to work, you need to add the contents of the firebaseConfig.ts to a Github secret named FIREBASE_CONFIG.**
 
 ## More stuff
 
@@ -26,7 +39,7 @@ Please refer to the [Create React App documentation](https://facebook.github.io/
 
 ## Credits
 
-- [Nebez Kassem](https://nabaxo.io)
+- [Nebez 'nabaxo' Kassem](https://nabaxo.io)
 
 ## License
 
