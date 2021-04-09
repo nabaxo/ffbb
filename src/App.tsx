@@ -6,7 +6,6 @@ import firebase from 'firebase/app';
 import SubmitNewRequests from './SubmitNewRequest';
 import Summaries from './Summaries';
 import Events from './Events';
-import { User } from './types';
 import Login from './Login';
 import CreateEvent from './CreateEvent';
 import Settings from './Settings';
@@ -14,21 +13,34 @@ import Settings from './Settings';
 const history = createBrowserHistory();
 
 function App() {
-    const [user, setUser] = useState<User>();
+    const [isSignedIn, setIsSignedIn] = useState<boolean>();
 
     useEffect(() => {
-        firebase.auth().onAuthStateChanged((u) => {
+        return firebase.auth().onAuthStateChanged((u) => {
             if (u) {
                 const collection = firebase.firestore().collection('users');
-                collection.doc(u.uid).onSnapshot(s => {
-                    const dbUser: User = s.data() as User;
-                    setUser(dbUser);
+                collection.doc(u.uid).onSnapshot(() => {
+                    setIsSignedIn(true);
+                    localStorage.setItem('isSignedIn', 'true');
+                    localStorage.setItem('uid', u.uid);
                 });
             } else {
-                setUser(undefined);
+                logOut();
             }
         });
     }, []);
+
+    useEffect(() => {
+        setIsSignedIn(localStorage.getItem('isSignedIn') ? true : false);
+    }, []);
+
+    function logOut() {
+        setIsSignedIn(false);
+        localStorage.removeItem('isSignedIn');
+        localStorage.removeItem('uid');
+        history.push('/login');
+        firebase.auth().signOut();
+    }
 
     return (
         <Router history={history} >
@@ -37,18 +49,12 @@ function App() {
                 <nav>
 
                     <ul>
-                        {/* <li>
-                            <NavLink activeClassName="active" to='/list'>List</NavLink>
-                        </li>
-                        <li>
-                            <NavLink activeClassName="active" to='/submit-new'>Submit Entry</NavLink>
-                        </li> */}
-                        {!user && (
+                        {!isSignedIn && (
                             <li>
                                 <NavLink activeClassName="active" to='/login'>Login</NavLink>
                             </li>
                         )}
-                        {user && (
+                        {isSignedIn && (
                             <>
                                 <li>
                                     <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
@@ -60,15 +66,9 @@ function App() {
                                     <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
                                 </li>
                                 <li>
-                                    Welcome {firebase.auth().currentUser?.displayName}
-                                </li>
-                                <li>
                                     <button
                                         className="btn btn-warning"
-                                        onClick={() => {
-                                            firebase.auth().signOut();
-                                            history.push('/login');
-                                        }}>Log out</button>
+                                        onClick={logOut}>Log out</button>
                                 </li>
                             </>
                         )}
@@ -77,7 +77,7 @@ function App() {
                 </nav>
             </header>
             <main>
-                {user && (
+                {isSignedIn && (
                     <Switch>
                         <Route exact path='/'>
                             <Redirect to='/list' />
@@ -99,7 +99,7 @@ function App() {
                         </Route>
                     </Switch>
                 )}
-                {!user && (
+                {!isSignedIn && (
                     <Switch>
                         <Route path='/login'>
                             <Login />
