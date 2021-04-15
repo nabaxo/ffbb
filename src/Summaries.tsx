@@ -8,13 +8,22 @@ interface ParamTypes {
     id: string;
 }
 
+interface listEntry {
+    id: string;
+    entry: Entry;
+    modMessage?: string;
+}
+
 export default function Summaries() {
     const { id } = useParams<ParamTypes>();
     const [event, setEvent] = useState<Bang>();
-    const [rawList, setRawList] = useState<{ id: string, entry: Entry; }[]>();
-    const [filteredList, setFilteredList] = useState<{ id: string, entry: Entry; }[]>();
+    const [rawList, setRawList] = useState<listEntry[]>();
+    const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
     const isModerator = event && uid && event.moderators.includes(uid);
+
+    // Following is needed to force update when getting the modMessages separately
+    const [, setForceUpdateHack] = useState<string>();
 
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(id).collection('requests');
@@ -22,13 +31,33 @@ export default function Summaries() {
             setEvent(doc.data() as Bang);
         });
 
-        return collection.onSnapshot((snapshot) => {
-            setRawList(snapshot.docs.map(d => ({
-                id: d.id,
-                entry: d.data() as Entry
-            })));
-        });
-    }, [id]);
+        if (isModerator) {
+            return collection.onSnapshot((snapshot) => {
+                setRawList(snapshot.docs.map(d => {
+                    const e: listEntry = {
+                        id: d.id,
+                        entry: d.data() as Entry,
+                    };
+
+                    collection.doc(d.id).collection('private').doc('private').get().then((m) => {
+                        setForceUpdateHack(m.get('modMessage') as string);
+                        e.modMessage = m.get('modMessage') as string;
+                    });
+
+                    return e;
+                }));
+            });
+        } else {
+            return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
+                setRawList(snapshot.docs.map(d => {
+                    return ({
+                        id: d.id,
+                        entry: d.data() as Entry
+                    });
+                }));
+            });
+        }
+    }, [id, isModerator]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
@@ -39,7 +68,8 @@ export default function Summaries() {
                 i.entry.summary.toLowerCase().includes(value) ||
                 i.entry.characters.join(' ').toLowerCase().includes(value) ||
                 i.entry.tags.join(' ').toLowerCase().includes(value) ||
-                i.entry.archiveWarnings?.join(' ').toLowerCase().includes(value)
+                i.entry.archiveWarnings?.join(' ').toLowerCase().includes(value) ||
+                i.modMessage?.toLowerCase().includes(value)
             ));
             if (value === '') {
                 setFilteredList(undefined);
@@ -70,7 +100,7 @@ export default function Summaries() {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Would you like a beta?</th>
+                            <th>Wants a beta</th>
                             <th>Rating</th>
                             <th>Archive Warnings</th>
                             <th>Characters</th>
@@ -78,7 +108,7 @@ export default function Summaries() {
                             <th>Tags</th>
                             <th>Summary</th>
                             <th>Tier</th>
-                            {isModerator && <th>Anything you'd like us to know?</th>}
+                            {isModerator && <th>Message to mods</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +116,7 @@ export default function Summaries() {
                             key={e.id}
                             entryId={e.id}
                             entry={e.entry}
+                            modMessage={isModerator ? e.modMessage : undefined}
                             isModerator={isModerator ? true : false}
                             eventId={id}
                         />)}

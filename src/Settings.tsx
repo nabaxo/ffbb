@@ -71,6 +71,7 @@ export default function Settings() {
 
     return (
         <div>
+            <h3>Hello {user?.displayName}</h3>
             <h4>My events</h4>
             {createdBangs && createdBangs.length !== 0 ?
                 <div>

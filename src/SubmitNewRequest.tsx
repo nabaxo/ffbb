@@ -18,18 +18,18 @@ export default function SubmitNewRequests(): JSX.Element {
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<Pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<Entry>({
-        uid: uid ? uid : '',
+        uid: localStorage.getItem('uid') || '',
         requestBeta: false,
         ageRating: 'G-T',
         authorRequestAge: false,
         characters: characters,
         pairings: pairings,
         tags: [''],
-        authorWarnings: '',
         summary: '',
         tier: 1,
         isPublished: false,
     });
+    const [modMessage, setModMessage] = useState<string>('');
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -37,7 +37,10 @@ export default function SubmitNewRequests(): JSX.Element {
             request.archiveWarnings = ['creator chose not to use archive warnings'];
         }
 
-        collection.doc().set(request);
+        const docRef = collection.doc();
+        docRef.set(request);
+        docRef.collection('private').doc('private').set({ modMessage: modMessage });
+
         userDocRef.update({
             joinedEvents: firebase.firestore.FieldValue.arrayUnion(id)
         });
@@ -159,6 +162,9 @@ export default function SubmitNewRequests(): JSX.Element {
         else if (name === 'tags') {
             setRequest({ ...request, [name]: value.split(',') });
         }
+        else if (name === 'authorWarnings') {
+            setModMessage(value);
+        }
         else {
             setRequest({ ...request, [name]: value });
         }
@@ -201,8 +207,8 @@ export default function SubmitNewRequests(): JSX.Element {
                 />
             </div>
             <div>
-                <strong>Anything you'd like us to know?</strong>
-                <textarea className="form-input" name="authorWarnings" value={request?.authorWarnings} onChange={handleChange} />
+                <strong>Anything you'd like the mods to know?</strong>
+                <textarea className="form-input" name="authorWarnings" value={modMessage} onChange={handleChange} />
             </div>
             <div>
                 <strong>Summary</strong>

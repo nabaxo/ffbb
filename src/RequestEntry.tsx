@@ -5,11 +5,12 @@ import firebase from 'firebase/app';
 interface IProps {
     entryId: string;
     entry: Entry;
+    modMessage?: string;
     eventId: string;
     isModerator?: boolean;
 }
 
-export default function RequestEntry({ entryId, entry, isModerator, eventId }: IProps) {
+export default function RequestEntry({ entryId, entry, modMessage, isModerator, eventId }: IProps) {
     const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
@@ -57,10 +58,10 @@ export default function RequestEntry({ entryId, entry, isModerator, eventId }: I
                     })}</td>
                     <td>{entry.tags.join(', ')}</td>
                     <td><p>
-                        {entry.summary}
+                        {entry.summary.length > 200 ? entry.summary.slice(0, 200).trimEnd() + "..." : entry.summary}
                     </p></td>
                     <td>{entry.tier}</td>
-                    {isModerator && <td>{entry.authorWarnings}</td>}
+                    {isModerator && modMessage ? <td>{modMessage.length > 200 ? modMessage.slice(0, 200).trimEnd() + "..." : modMessage}</td> : isModerator && <td></td>}
                 </tr>)}
             {isModerator && (
                 <tr className="mod-bar">

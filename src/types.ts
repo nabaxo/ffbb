@@ -17,7 +17,7 @@ export interface Entry {
     characters: string[];
     pairings: Pair[];
     tags: string[];
-    authorWarnings: string;
+    modMessage?: string;
     summary: string,
     tier: number;
     isPublished: boolean;

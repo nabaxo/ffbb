@@ -222,7 +222,7 @@ tr {
 }
 
 tr:hover:not(thead tr, .mod-bar) {
-    filter: brightness(.9);
+    filter: brightness(.9) saturate(2);
 }
 
 th,
