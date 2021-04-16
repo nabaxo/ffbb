@@ -21,7 +21,6 @@ function App() {
                 const collection = firebase.firestore().collection('users');
                 collection.doc(u.uid).onSnapshot(() => {
                     setIsSignedIn(true);
-                    localStorage.setItem('isSignedIn', 'true');
                     localStorage.setItem('uid', u.uid);
                 });
             } else {
@@ -31,12 +30,11 @@ function App() {
     }, []);
 
     useEffect(() => {
-        setIsSignedIn(localStorage.getItem('isSignedIn') ? true : false);
+        setIsSignedIn(localStorage.getItem('uid') ? true : false);
     }, []);
 
     function logOut() {
         setIsSignedIn(false);
-        localStorage.removeItem('isSignedIn');
         localStorage.removeItem('uid');
         history.push('/login');
         firebase.auth().signOut();
