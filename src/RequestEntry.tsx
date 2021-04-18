@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Entry, User } from './types';
 import firebase from 'firebase/app';
 
@@ -8,9 +8,10 @@ interface IProps {
     modMessage?: string;
     eventId: string;
     isModerator?: boolean;
+    setDetails: (text: string) => void;
 }
 
-export default function RequestEntry({ entryId, entry, modMessage, isModerator, eventId }: IProps) {
+export default function RequestEntry({ entryId, entry, modMessage, isModerator, eventId, setDetails }: IProps) {
     const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
@@ -57,9 +58,9 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                         );
                     })}</td>
                     <td>{entry.tags.join(', ')}</td>
-                    <td><p>
-                        {entry.summary.length > 200 ? entry.summary.slice(0, 200).trimEnd() + "..." : entry.summary}
-                    </p></td>
+                    <td>
+                        {entry.summary.length > 200 ? <p className="pointer" onClick={() => setDetails(entry.summary)}>{entry.summary.slice(0, 200).trimEnd() + "..."}</p> : <p>{entry.summary}</p>}
+                    </td>
                     <td>{entry.tier}</td>
                     {isModerator && modMessage ? <td>{modMessage.length > 200 ? modMessage.slice(0, 200).trimEnd() + "..." : modMessage}</td> : isModerator && <td></td>}
                 </tr>)}

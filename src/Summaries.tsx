@@ -1,8 +1,9 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
 import { Entry, Bang } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
+import DetailsOverlay from './DetailsOverlay';
 
 interface ParamTypes {
     id: string;
@@ -21,6 +22,7 @@ export default function Summaries() {
     const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
     const isModerator = event && uid && event.moderators.includes(uid);
+    const [details, setDetails] = useState<string>();
 
     // Following is needed to force update when getting the modMessages separately
     const [, setForceUpdateHack] = useState<string>();
@@ -91,6 +93,7 @@ export default function Summaries() {
     return (
         <div className="entry-list">
             {event && <>
+                {details && <DetailsOverlay text={details} setDetails={setDetails} />}
                 <div className="information-box">{event.information}</div>
                 <span className="btn-row">
                     <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
@@ -119,6 +122,7 @@ export default function Summaries() {
                             modMessage={isModerator ? e.modMessage : undefined}
                             isModerator={isModerator ? true : false}
                             eventId={id}
+                            setDetails={setDetails}
                         />)}
                     </tbody>
                 </table>

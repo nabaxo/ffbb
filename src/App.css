@@ -1,6 +1,6 @@
 :root {
     font-size: 16px;
-    --animation: all .3s ease-in-out;
+    --animation: all .3s ease;
     --body-color: #e5e9ec;
     --text-color: #282c34;
     --border: 1px solid #cecece;
@@ -17,6 +17,17 @@
 
 body {
     background-color: var(--dark);
+}
+
+.row {
+    flex-direction: row;
+    padding: 0;
+}
+
+.column {
+    display: block;
+    flex-direction: column;
+    padding: .7rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {}
@@ -230,6 +241,60 @@ td {
     padding: .5rem;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity .4s ease;
+}
+
+.overlay-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(10, 10, 10, .5);
+    z-index: 250;
+}
+
+.overlay-text {
+    display: flex;
+    width: 50%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 0 1rem;
+    overflow-y: auto;
+    z-index: 250;
+    border-radius: 1rem;
+}
+
+.close-x {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #555;
+    margin-block-start: -1rem;
+    margin-block-end: 1rem;
+    align-self: center;
+    text-shadow: 0 0 0.2rem #000000ee;
+    transition: var(--animation);
+}
+
+.close-x:hover,
+.close-x:active,
+.close-x:focus {
+    transform: scale(1.4);
+}
 
 .event-list {
     min-width: 100%;
