@@ -4,14 +4,14 @@ import { Bang } from './types';
 import { useHistory } from 'react-router-dom';
 
 
-export default function Events() {
+export default function EventList() {
     const [list, setList] = useState<{ id: string, event: Bang; }[]>();
     const history = useHistory();
 
     useEffect(() => {
         const collection = firebase.firestore().collection('events');
 
-        return collection.onSnapshot((snapshot) => {
+        return collection.where('public', '==', true).onSnapshot((snapshot) => {
             const r = snapshot.docs.map(d => {
                 return {
                     id: d.id,

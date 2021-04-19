@@ -15,7 +15,7 @@ interface listEntry {
     modMessage?: string;
 }
 
-export default function Summaries() {
+export default function Event() {
     const { id } = useParams<ParamTypes>();
     const [event, setEvent] = useState<Bang>();
     const [rawList, setRawList] = useState<listEntry[]>();

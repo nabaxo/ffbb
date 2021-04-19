@@ -4,8 +4,8 @@ import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import firebase from 'firebase/app';
 import SubmitNewRequests from './SubmitNewRequest';
-import Summaries from './Summaries';
-import Events from './Events';
+import Event from './Event';
+import EventList from './EventList';
 import Login from './Login';
 import CreateEvent from './CreateEvent';
 import Settings from './Settings';
@@ -81,7 +81,7 @@ function App() {
                             <Redirect to='/list' />
                         </Route>
                         <Route path='/list'>
-                            <Events />
+                            <EventList />
                         </Route>
                         <Route path='/create-event'>
                             <CreateEvent />
@@ -93,7 +93,7 @@ function App() {
                             <SubmitNewRequests />
                         </Route>
                         <Route exact path='/event/:id'>
-                            <Summaries />
+                            <Event />
                         </Route>
                     </Switch>
                 )}
