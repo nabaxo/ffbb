@@ -268,14 +268,22 @@ td {
     z-index: 250;
 }
 
-.overlay-text {
+.overlay-container {
     display: flex;
     width: 50%;
     margin: 0 auto;
     background-color: #fff;
     padding: 0 1rem;
-    overflow-y: auto;
+    overflow-y: hidden;
     z-index: 250;
+    border-radius: 1ch;
+
+}
+
+.overlay-text {
+    background-color: #fff;
+    padding: 0 1rem;
+    overflow-y: auto;
     border-radius: 1rem;
 }
 
@@ -294,6 +302,14 @@ td {
 .close-x:active,
 .close-x:focus {
     transform: scale(1.4);
+}
+
+.preserve-whitespace {
+    white-space: pre-line;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
 
 .event-list {

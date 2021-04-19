@@ -38,13 +38,20 @@ export default function SubmitNewRequests(): JSX.Element {
         }
 
         const docRef = collection.doc();
-        docRef.set(request);
-        docRef.collection('private').doc('private').set({ modMessage: modMessage });
+
+        const newRequest: Entry = { ...request, summary: addNewLines(request.summary) };
+
+        docRef.set(newRequest);
+        docRef.collection('private').doc('private').set({ modMessage: addNewLines(modMessage) });
 
         userDocRef.update({
             joinedEvents: firebase.firestore.FieldValue.arrayUnion(id)
         });
         history.push('/event/' + id);
+    }
+
+    function addNewLines(t: string) {
+        return t.replaceAll('\n', '\\n');
     }
 
     function handleAddCharacter() {

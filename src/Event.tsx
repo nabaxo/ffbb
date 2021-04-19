@@ -27,6 +27,12 @@ export default function Event() {
     // Following is needed to force update when getting the modMessages separately
     const [, setForceUpdateHack] = useState<string>();
 
+    if (details) {
+        document.body.classList.add('no-scroll');
+    } else {
+        document.body.classList.remove('no-scroll');
+    }
+
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(id).collection('requests');
         firebase.firestore().collection('events').doc(id).get().then((doc) => {

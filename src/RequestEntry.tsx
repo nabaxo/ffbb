@@ -40,6 +40,14 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
 
     }, [entry.uid]);
 
+    function addLineBreaks(t: string) {
+        const text = t.replaceAll('\\n', '\n');
+        if (text.length > 200) {
+            return <p className="pointer preserve-whitespace" onClick={() => setDetails(text)}>{text.slice(0, 200).trimEnd() + "..."}</p>;
+        }
+        return <p className="preserve-whitespace">{text}</p>;
+    }
+
     return (
         <>
             {(isModerator || entry.isPublished) && (
@@ -59,10 +67,10 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                     })}</td>
                     <td>{entry.tags.join(', ')}</td>
                     <td>
-                        {entry.summary.length > 200 ? <p className="pointer" onClick={() => setDetails(entry.summary)}>{entry.summary.slice(0, 200).trimEnd() + "..."}</p> : <p>{entry.summary}</p>}
+                        {addLineBreaks(entry.summary)}
                     </td>
                     <td>{entry.tier}</td>
-                    {isModerator && modMessage ? <td>{modMessage.length > 200 ? modMessage.slice(0, 200).trimEnd() + "..." : modMessage}</td> : isModerator && <td></td>}
+                    {isModerator && modMessage ? <td>{addLineBreaks(modMessage)}</td> : isModerator && <td></td>}
                 </tr>)}
             {isModerator && (
                 <tr className="mod-bar">
