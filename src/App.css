@@ -189,6 +189,12 @@ footer a {
     margin-inline-end: 1rem;
 }
 
+.age-gate {
+    margin-block-start: 1ch;
+    border-radius: var(--radius);
+    border: var(--border);
+}
+
 .filter:focus {
     outline: none;
 }

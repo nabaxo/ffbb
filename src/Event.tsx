@@ -18,6 +18,7 @@ interface listEntry {
 export default function Event() {
     const { id } = useParams<ParamTypes>();
     const [event, setEvent] = useState<Bang>();
+    const [ageConfirm, setAgeConfirm] = useState<boolean>(false);
     const [rawList, setRawList] = useState<listEntry[]>();
     const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
@@ -56,16 +57,27 @@ export default function Event() {
                 }));
             });
         } else {
-            return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
-                setRawList(snapshot.docs.map(d => {
-                    return ({
-                        id: d.id,
-                        entry: d.data() as Entry
-                    });
-                }));
-            });
+            if (ageConfirm) {
+                return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
+                    setRawList(snapshot.docs.map(d => {
+                        return ({
+                            id: d.id,
+                            entry: d.data() as Entry
+                        });
+                    }));
+                });
+            } else {
+                return collection.where('isPublished', '==', true).where('ageRating', '==', 'G-T').onSnapshot((snapshot) => {
+                    setRawList(snapshot.docs.map(d => {
+                        return ({
+                            id: d.id,
+                            entry: d.data() as Entry
+                        });
+                    }));
+                });
+            }
         }
-    }, [id, isModerator]);
+    }, [id, isModerator, ageConfirm]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
@@ -96,6 +108,10 @@ export default function Event() {
         }
     })();
 
+    function handleAgeCheck(event: ChangeEvent<any>) {
+        setAgeConfirm(event.target.checked);
+    }
+
     return (
         <div className="entry-list">
             {event && <>
@@ -105,6 +121,18 @@ export default function Event() {
                     <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
                     <a className="btn btn-submit" href={'/event/' + id + '/submit'} >Submit New!</a>
                 </span>
+                {!isModerator && (
+                    <fieldset className="age-gate">
+                        <input
+                            type="checkbox"
+                            name="age-gate"
+                            id="age-gate"
+                            checked={ageConfirm}
+                            onChange={handleAgeCheck}
+                        />
+                        <label htmlFor="age-gate">&nbsp;Show 18+ fics</label>
+                    </fieldset>
+                )}
                 <table>
                     <thead>
                         <tr>

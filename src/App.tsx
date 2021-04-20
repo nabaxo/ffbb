@@ -43,7 +43,7 @@ function App() {
     return (
         <Router history={history} >
             <header className="App-header">
-                <h1>FFic BBang</h1>
+                <h1>FicBang</h1>
                 <nav>
 
                     <ul>
