@@ -52,7 +52,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
         <>
             {(isModerator || entry.isPublished) && (
                 <tr className={entry.isPublished ? '' : 'not-approved'}>
-                    <td>{entryId.substring(0, 5)}</td>
+                    <td>{entryId.substring(0, 3).toUpperCase()}</td>
                     <td>{entry.requestBeta ? 'Yes' : 'No'}</td>
                     <td>{entry.ageRating}</td>
                     <td>{entry.archiveWarnings?.join(', ')}</td>
