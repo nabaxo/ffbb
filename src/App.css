@@ -20,12 +20,19 @@ body {
 }
 
 .row {
+    display: flex;
     flex-direction: row;
     padding: 0;
+    width: 100%;
+}
+
+.flex-row-child {
+    flex: 1;
+    margin: 0 1ch;
 }
 
 .column {
-    display: block;
+    display: flex;
     flex-direction: column;
     padding: .7rem;
 }
@@ -52,11 +59,9 @@ nav {
     background-color: #6da3da;
     width: 100%;
     height: 3rem;
-    /* min-height: 4vh; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: flex-end; */
     font-size: 1rem;
 }
 
@@ -118,12 +123,16 @@ footer a {
     color: var(--blue);
 }
 
-.information-box {
+.information-box,
+.add-mod-row {
+    gap: 1ch;
+}
+
+.event-info {
     border: var(--border);
     border-radius: var(--radius);
     background-color: var(--yellow-light);
     padding: 1rem;
-    margin-block-end: 1rem;
 }
 
 .App-link {
@@ -131,7 +140,6 @@ footer a {
 }
 
 .btn-row {
-    /* width: 100%; */
     display: flex;
     flex-direction: row;
 }
@@ -173,6 +181,11 @@ footer a {
     background-color: var(--red);
 }
 
+.btn-full-height {
+    padding: .6rem;
+    vertical-align: top;
+}
+
 .entry-list {
     display: flex;
     flex-direction: column;
@@ -189,13 +202,43 @@ footer a {
     margin-inline-end: 1rem;
 }
 
-.age-gate {
-    margin-block-start: 1ch;
+fieldset {
+    margin: 1ch 0;
     border-radius: var(--radius);
     border: var(--border);
 }
 
-.filter:focus {
+.moderator-box {
+    border-radius: var(--radius);
+    border: var(--border);
+}
+
+.moderator-box>table {
+    width: 40%;
+    margin: 1ch;
+}
+
+.moderator-box summary {
+    padding: 1ch;
+    cursor: pointer;
+    list-style-type: none;
+    background-color: var(--body-color);
+}
+
+.moderator-box form {
+    padding: 0 1ch;
+}
+
+.moderator-box>*>*>.btn {
+    margin-inline: 1ch;
+}
+
+.mod-input {
+    flex: 2
+}
+
+.filter:focus,
+.mod-input:focus {
     outline: none;
 }
 
@@ -300,7 +343,6 @@ td {
     margin-block-start: -1rem;
     margin-block-end: 1rem;
     align-self: center;
-    text-shadow: 0 0 0.2rem #000000ee;
     transition: var(--animation);
 }
 
@@ -358,7 +400,8 @@ form>div>strong {
 .form-input,
 .date-input,
 .char-input,
-.pair-input {
+.pair-input,
+.mod-input {
     padding: .5rem;
     font-size: 1rem;
     border: 1px solid #aaa;

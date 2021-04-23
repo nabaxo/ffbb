@@ -4,6 +4,7 @@ import { Entry, Bang } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
 import DetailsOverlay from './DetailsOverlay';
+import ManageModerators from './ManageModeratosr';
 
 interface ParamTypes {
     id: string;
@@ -16,13 +17,13 @@ interface listEntry {
 }
 
 export default function Event() {
-    const { id } = useParams<ParamTypes>();
+    const { id: bid } = useParams<ParamTypes>();
     const [event, setEvent] = useState<Bang>();
     const [ageConfirm, setAgeConfirm] = useState<boolean>(false);
     const [rawList, setRawList] = useState<listEntry[]>();
     const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
-    const isModerator = event && uid && event.moderators.includes(uid);
+    const [isModerator, setIsModerator] = useState<boolean>();
     const [details, setDetails] = useState<string>();
 
     // Following is needed to force update when getting the modMessages separately
@@ -35,8 +36,8 @@ export default function Event() {
     }
 
     useEffect(() => {
-        const collection = firebase.firestore().collection('events').doc(id).collection('requests');
-        firebase.firestore().collection('events').doc(id).get().then((doc) => {
+        const collection = firebase.firestore().collection('events').doc(bid).collection('requests');
+        firebase.firestore().collection('events').doc(bid).onSnapshot((doc) => {
             setEvent(doc.data() as Bang);
         });
 
@@ -77,7 +78,15 @@ export default function Event() {
                 });
             }
         }
-    }, [id, isModerator, ageConfirm]);
+    }, [bid, isModerator, ageConfirm]);
+
+    useEffect(() => {
+        if (event && uid && event.moderators.includes(uid)) {
+            setIsModerator(true);
+        } else {
+            setIsModerator(false);
+        }
+    }, [uid, event]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
@@ -112,27 +121,59 @@ export default function Event() {
         setAgeConfirm(event.target.checked);
     }
 
+    function addModerator(mod: string) {
+        const collection = firebase.firestore().collection('events').doc(bid);
+
+        if (event && !event.moderators.includes(mod)) {
+            event.moderators.push(mod);
+            const mods = [...event.moderators];
+            setEvent({ ...event, moderators: mods });
+            collection.set(event, { merge: true });
+        }
+    }
+
+    function removeModerator(mod: string) {
+        const collection = firebase.firestore().collection('events').doc(bid);
+
+        if (event && event.creatorId !== mod) {
+            event.moderators.splice(event.moderators.indexOf(mod), 1);
+            const mods = [...event.moderators];
+            setEvent({ ...event, moderators: mods });
+            collection.set(event, { merge: true });
+        }
+    }
+
     return (
         <div className="entry-list">
             {event && <>
-                {details && <DetailsOverlay text={details} setDetails={setDetails} />}
-                <div className="information-box">{event.information}</div>
-                <span className="btn-row">
-                    <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                    <a className="btn btn-submit" href={'/event/' + id + '/submit'} >Submit New!</a>
-                </span>
-                {!isModerator && (
-                    <fieldset className="age-gate">
-                        <input
-                            type="checkbox"
-                            name="age-gate"
-                            id="age-gate"
-                            checked={ageConfirm}
-                            onChange={handleAgeCheck}
+                <div className="column information-box">
+                    {details && <DetailsOverlay text={details} setDetails={setDetails} />}
+                    <div className="event-info">{event.information}</div>
+                    {isModerator && (
+                        <ManageModerators
+                            creator={event.creatorId}
+                            mods={event.moderators}
+                            addModerator={addModerator}
+                            removeModerator={removeModerator}
                         />
-                        <label htmlFor="age-gate">&nbsp;Show 18+ fics</label>
-                    </fieldset>
-                )}
+                    )}
+                    <span className="btn-row">
+                        <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
+                        <a className="btn btn-submit" href={'/event/' + bid + '/submit'} >Submit New!</a>
+                    </span>
+                    {!isModerator && (
+                        <fieldset>
+                            <input
+                                type="checkbox"
+                                name="age-gate"
+                                id="age-gate"
+                                checked={ageConfirm}
+                                onChange={handleAgeCheck}
+                            />
+                            <label htmlFor="age-gate">&nbsp;Show 18+ fics</label>
+                        </fieldset>
+                    )}
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -155,7 +196,7 @@ export default function Event() {
                             entry={e.entry}
                             modMessage={isModerator ? e.modMessage : undefined}
                             isModerator={isModerator ? true : false}
-                            eventId={id}
+                            eventId={bid}
                             setDetails={setDetails}
                         />)}
                     </tbody>
