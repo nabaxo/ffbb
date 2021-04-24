@@ -143,12 +143,16 @@ export default function Event() {
         }
     }
 
+    function addNewLines(t: string) {
+        return t.replaceAll('\\n', '\n');
+    }
+
     return (
         <div className="entry-list">
             {event && <>
                 <div className="column information-box">
                     {details && <DetailsOverlay text={details} setDetails={setDetails} />}
-                    <div className="event-info">{event.information}</div>
+                    <div className="event-info preserve-whitespace">{addNewLines(event.information)}</div>
                     {isModerator && (
                         <ManageModerators
                             creator={event.creatorId}

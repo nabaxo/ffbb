@@ -25,9 +25,10 @@ export default function CreateEvent() {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log(bang);
 
-        collection.add(bang).then((docRef) => {
+        const newBang: Bang = { ...bang, information: addNewLines(bang.information) };
+
+        collection.add(newBang).then((docRef) => {
             userDocRef.update({
                 createdEvents: firebase.firestore.FieldValue.arrayUnion(docRef.id)
             });
@@ -49,6 +50,10 @@ export default function CreateEvent() {
         else {
             setBang({ ...bang, [name]: value });
         }
+    }
+
+    function addNewLines(t: string) {
+        return t.replaceAll('\n', '\\n');
     }
 
     return (
@@ -121,7 +126,7 @@ export default function CreateEvent() {
                     type="checkbox" />Yes</label>
             </div>
             <div>
-                <input className="btn btn-create" type="submit" value="Create Event" />
+                <input className="btn btn-submit" type="submit" value="Create Event" />
             </div>
         </form>
     );
