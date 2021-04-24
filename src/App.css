@@ -19,6 +19,11 @@ body {
     background-color: var(--dark);
 }
 
+#root {
+    width: 100%;
+    margin: 0;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -34,24 +39,27 @@ body {
 .column {
     display: flex;
     flex-direction: column;
-    padding: .7rem;
+    padding: 0 1ch;
 }
 
-@media (prefers-reduced-motion: no-preference) {}
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --animation: none;
+    }
+}
 
-.App-header {
+header {
     text-align: center;
     background-color: var(--dark);
     min-height: 10vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
     font-size: calc(10px + 2vmin);
     color: white;
+    min-width: 100%;
 }
 
-.App-header h1 {
+header h1 {
     margin: .2rem 0;
 }
 
@@ -78,12 +86,13 @@ nav li {
     display: flex;
     flex-direction: row;
     list-style: none;
+    /* transition: var(--animation); */
 }
 
 nav li a {
     padding: 1ch 0;
     font-size: .8rem;
-    width: 10rem;
+    width: 8rem;
     height: 1rem;
     background-color: var(--light);
     border-radius: var(--radius);
@@ -98,29 +107,33 @@ nav li a:hover,
     background-color: #fff;
 }
 
+.burger-menu {
+    display: none;
+}
+
 main {
     background-color: var(--light);
-    min-height: 80vh;
-    min-width: 70ch;
-    width: fit-content;
-    padding: 2ch;
-    margin: 2ch;
     margin: auto;
     color: var(--text-color);
+    width: 100%;
 }
 
 footer {
     background-color: var(--dark);
     color: var(--light) !important;
     width: fit-content;
-    padding: 2ch;
-    margin: 2ch;
+    padding: 2ch 0;
     margin: auto;
     color: var(--text-color);
+    text-align: center;
 }
 
 footer a {
     color: var(--blue);
+}
+
+.information-box {
+    padding-block: 1ch;
 }
 
 .information-box,
@@ -133,10 +146,6 @@ footer a {
     border-radius: var(--radius);
     background-color: var(--yellow-light);
     padding: 1rem;
-}
-
-.App-link {
-    color: #61dafb;
 }
 
 .btn-row {
@@ -186,14 +195,15 @@ footer a {
     vertical-align: top;
 }
 
-.entry-list {
+.entry-list,
+.event-list {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .filter {
-    width: 40rem;
+    width: 50vw;
     padding: .5rem;
     border-radius: var(--radius);
     border: var(--border);
@@ -242,18 +252,24 @@ fieldset {
     outline: none;
 }
 
+.event-table {
+    width: 100%;
+    margin: 0;
+}
+
 table {
     margin-block: 1rem;
     border-collapse: collapse;
     border: var(--border) 0;
-    margin: 1rem;
+    margin: 0 1rem;
+    max-width: 100%;
 }
 
 thead tr {
     background-color: #dedede !important;
 }
 
-table thead th {
+th {
     padding-inline: 1rem;
     border-bottom: var(--border);
     background-color: #ececec;
@@ -261,6 +277,7 @@ table thead th {
     top: 0;
     margin-block-start: -1px;
     z-index: 100;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
 tr:nth-child(odd) {
@@ -360,11 +377,6 @@ td {
     overflow: hidden;
 }
 
-.event-list {
-    min-width: 100%;
-    margin: 1rem 0;
-}
-
 .event-link {
     cursor: pointer;
 }
@@ -378,6 +390,10 @@ td {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.submit-form {
+    margin-block-end: 1ch;
 }
 
 form>div {
@@ -438,20 +454,35 @@ form>div>strong {
 }
 
 @media screen and (max-width: 576px) {
-    .App-header {
-        min-width: 100%;
-    }
 
-    main {
-        max-width: 100%;
+    nav {
+        height: fit-content;
     }
 
     nav ul {
+        padding-block: 1ch;
         gap: 0;
+        flex-direction: column;
+        align-self: flex-end;
+        margin: 0 1ch;
     }
 
-    nav li a {
+    nav li a,
+    nav li .btn {
+        margin-block-end: 1ch;
         width: 8rem;
+    }
+
+    .burger-menu {
+        display: block;
+        align-self: flex-end;
+        font-size: 2rem;
+    }
+
+    .close-menu {
+        visibility: hidden;
+        height: 0;
+        opacity: 0;
     }
 
     .pairings {
@@ -466,6 +497,23 @@ form>div>strong {
 
     .form-input {
         width: 85vw;
+    }
+
+    .overlay-container {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+
+    .event-table {
+        overflow-x: scroll;
+        height: 600px;
+    }
+
+    td p {
+        max-height: 10rem;
+        overflow-y: scroll;
     }
 
 }

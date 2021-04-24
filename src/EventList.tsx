@@ -23,9 +23,11 @@ export default function EventList() {
     }, []);
 
     return (
-        <div>
-            <a className="btn btn-submit" href={'/create-event'} >Create Bang!</a>
-            <table className="event-list">
+        <div className="event-list">
+            <div className="column information-box">
+                <a className="btn btn-submit" href={'/create-event'} >Create Bang!</a>
+            </div>
+            <table>
                 <thead>
                     <tr>
                         <th>Event</th>

@@ -3,6 +3,7 @@ import './App.css';
 import { NavLink, Redirect, Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import firebase from 'firebase/app';
+import { ImMenu } from 'react-icons/im';
 import SubmitNewRequests from './SubmitNewRequest';
 import Event from './Event';
 import EventList from './EventList';
@@ -14,6 +15,7 @@ const history = createBrowserHistory();
 
 function App() {
     const [isSignedIn, setIsSignedIn] = useState<boolean>();
+    const [showMenu, setShowMenu] = useState<boolean>(false);
 
     useEffect(() => {
         return firebase.auth().onAuthStateChanged((u) => {
@@ -40,74 +42,81 @@ function App() {
         firebase.auth().signOut();
     }
 
+    function menuButton() {
+        setShowMenu(!showMenu);
+    }
+
     return (
         <Router history={history} >
-            <header className="App-header">
-                <h1>FicBang</h1>
-                <nav>
-
-                    <ul>
-                        {!isSignedIn && (
-                            <li>
-                                <NavLink activeClassName="active" to='/login'>Login</NavLink>
-                            </li>
-                        )}
-                        {isSignedIn && (
-                            <>
+            <div className="column">
+                <header>
+                    <h1>FicBang</h1>
+                    <nav>
+                        <ul>
+                            {!isSignedIn && (
                                 <li>
-                                    <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
+                                    <NavLink activeClassName="active" to='/login'>Login</NavLink>
                                 </li>
-                                <li>
-                                    <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
-                                </li>
-                                <li>
-                                    <button
-                                        className="btn btn-warning"
-                                        onClick={logOut}>Log out</button>
-                                </li>
-                            </>
-                        )}
-                    </ul>
-
-                </nav>
-            </header>
-            <main>
-                {isSignedIn && (
-                    <Switch>
-                        <Route exact path='/'>
-                            <Redirect to='/list' />
-                        </Route>
-                        <Route path='/list'>
-                            <EventList />
-                        </Route>
-                        <Route path='/create-event'>
-                            <CreateEvent />
-                        </Route>
-                        <Route path='/settings'>
-                            <Settings />
-                        </Route>
-                        <Route path='/event/:id/submit'>
-                            <SubmitNewRequests />
-                        </Route>
-                        <Route exact path='/event/:id'>
-                            <Event />
-                        </Route>
-                    </Switch>
-                )}
-                {!isSignedIn && (
-                    <Switch>
-                        <Route path='/login'>
-                            <Login />
-                        </Route>
-                    </Switch>
-                )}
-            </main>
-            <footer>
-                <span>This app is open source, check us out on <a href="https://github.com/nabaxo/ffbb">Github</a>!</span>
-            </footer>
+                            )}
+                            {isSignedIn && (
+                                <>
+                                    <li className="burger-menu">
+                                        <ImMenu onClick={menuButton} />
+                                    </li>
+                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                        <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
+                                    </li>
+                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                        <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
+                                    </li>
+                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                        <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
+                                    </li>
+                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                        <button
+                                            className="btn btn-warning"
+                                            onClick={logOut}>Log out</button>
+                                    </li>
+                                </>
+                            )}
+                        </ul>
+                    </nav>
+                </header>
+                <main>
+                    {isSignedIn && (
+                        <Switch>
+                            <Route exact path='/'>
+                                <Redirect to='/list' />
+                            </Route>
+                            <Route path='/list'>
+                                <EventList />
+                            </Route>
+                            <Route path='/create-event'>
+                                <CreateEvent />
+                            </Route>
+                            <Route path='/settings'>
+                                <Settings />
+                            </Route>
+                            <Route path='/event/:id/submit'>
+                                <SubmitNewRequests />
+                            </Route>
+                            <Route exact path='/event/:id'>
+                                <Event />
+                            </Route>
+                        </Switch>
+                    )}
+                    {!isSignedIn && (
+                        <Switch>
+                            <Route path='/login'>
+                                <Login />
+                            </Route>
+                        </Switch>
+                    )}
+                </main>
+                <footer>
+                    <span>This app is open source, check us out on <a href="https://github.com/nabaxo/ffbb">Github</a>!</span>
+                </footer>
+            </div>
         </Router>
     );
 }

@@ -178,7 +178,7 @@ export default function SubmitNewRequests(): JSX.Element {
     }
 
     return (
-        <form className="submit-form" action="" onSubmit={(event) => handleSubmit(event)}>
+        <form className="column submit-form" action="" onSubmit={(event) => handleSubmit(event)}>
             <div>
                 <strong>Would you like a beta?</strong>
                 <label><input name="requestBeta" onChange={handleChange} type="checkbox" />Yes</label>

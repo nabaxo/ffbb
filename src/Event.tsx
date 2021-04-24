@@ -4,7 +4,7 @@ import { Entry, Bang } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
 import DetailsOverlay from './DetailsOverlay';
-import ManageModerators from './ManageModeratosr';
+import ManageModerators from './ManageModerator';
 
 interface ParamTypes {
     id: string;
@@ -174,33 +174,35 @@ export default function Event() {
                         </fieldset>
                     )}
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Wants a beta</th>
-                            <th>Rating</th>
-                            <th>Archive Warnings</th>
-                            <th>Characters</th>
-                            <th>Pairings</th>
-                            <th>Tags</th>
-                            <th>Summary</th>
-                            <th>Tier</th>
-                            {isModerator && <th>Message to mods</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list && list.map(e => <RequestEntry
-                            key={e.id}
-                            entryId={e.id}
-                            entry={e.entry}
-                            modMessage={isModerator ? e.modMessage : undefined}
-                            isModerator={isModerator ? true : false}
-                            eventId={bid}
-                            setDetails={setDetails}
-                        />)}
-                    </tbody>
-                </table>
+                <div className="event-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Wants a beta</th>
+                                <th>Rating</th>
+                                <th>Archive Warnings</th>
+                                <th>Characters</th>
+                                <th>Pairings</th>
+                                <th>Tags</th>
+                                <th>Summary</th>
+                                <th>Tier</th>
+                                {isModerator && <th>Message to mods</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {list && list.map(e => <RequestEntry
+                                key={e.id}
+                                entryId={e.id}
+                                entry={e.entry}
+                                modMessage={isModerator ? e.modMessage : undefined}
+                                isModerator={isModerator ? true : false}
+                                eventId={bid}
+                                setDetails={setDetails}
+                            />)}
+                        </tbody>
+                    </table>
+                </div>
             </>}
         </div>
     );

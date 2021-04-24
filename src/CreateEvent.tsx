@@ -52,7 +52,7 @@ export default function CreateEvent() {
     }
 
     return (
-        <form className="submit-form" action="" onSubmit={(event) => handleSubmit(event)}>
+        <form className="column submit-form" action="" onSubmit={(event) => handleSubmit(event)}>
             <div>
                 <strong>Name of your event:</strong>
                 <label><input
