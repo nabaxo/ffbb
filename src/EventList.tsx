@@ -27,31 +27,38 @@ export default function EventList() {
             <div className="column information-box">
                 <a className="btn btn-submit" href={'/create-event'} >Create Bang!</a>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Fandom</th>
-                        <th>Summary</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {list && list.map(e => (
-                        e.event.public &&
-                        <tr className="event-link" key={e.id} onClick={() => {
-                            history.push('/event/' + e.id);
-                        }} >
-                            <td>{e.event.title}</td>
-                            <td>{e.event.fandom}</td>
-                            <td>{e.event.summary}</td>
-                            <td>{e.event.startDate.toDate().toLocaleDateString()}</td>
-                            <td>{e.event.endDate.toDate().toLocaleDateString()}</td>
+            {list && list.length ?
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Fandom</th>
+                            <th>Summary</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {list && list.map(e => (
+                            e.event.public &&
+                            <tr className="event-link" key={e.id} onClick={() => {
+                                history.push('/event/' + e.id);
+                            }} >
+                                <td>{e.event.title}</td>
+                                <td>{e.event.fandom}</td>
+                                <td>{e.event.summary}</td>
+                                <td>{e.event.startDate.toDate().toLocaleDateString()}</td>
+                                <td>{e.event.endDate.toDate().toLocaleDateString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                :
+                <div>
+                    <h3>There are currently no public big bangs running!</h3>
+                    <p>(Private ones can be shared via link)</p>
+                </div>
+            }
         </div>
     );
 }
