@@ -39,7 +39,7 @@ body {
 .column {
     display: flex;
     flex-direction: column;
-    padding: 0 1ch;
+    padding: 1ch;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -146,6 +146,19 @@ footer a {
     border-radius: var(--radius);
     background-color: var(--yellow-light);
     padding: 1rem;
+    position: relative;
+}
+
+.edit-info {
+    font-size: 1.5rem;
+    position: absolute;
+    bottom: 1ch;
+    right: 1ch;
+    transition: var(--animation);
+}
+
+.edit-info:hover {
+    color: var(--orange)
 }
 
 .btn-row {

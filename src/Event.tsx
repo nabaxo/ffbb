@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
+import { FaEdit } from 'react-icons/fa';
 import { Entry, Bang } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
@@ -18,13 +19,14 @@ interface listEntry {
 
 export default function Event() {
     const { id: bid } = useParams<ParamTypes>();
-    const [event, setEvent] = useState<Bang>();
+    const [bang, setBang] = useState<Bang>();
     const [ageConfirm, setAgeConfirm] = useState<boolean>(false);
     const [rawList, setRawList] = useState<listEntry[]>();
     const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
     const [isModerator, setIsModerator] = useState<boolean>();
     const [details, setDetails] = useState<string>();
+    const [openInfo, setOpenInfo] = useState<boolean>();
 
     // Following is needed to force update when getting the modMessages separately
     const [, setForceUpdateHack] = useState<string>();
@@ -38,7 +40,7 @@ export default function Event() {
     useEffect(() => {
         const collection = firebase.firestore().collection('events').doc(bid).collection('requests');
         firebase.firestore().collection('events').doc(bid).onSnapshot((doc) => {
-            setEvent(doc.data() as Bang);
+            setBang(doc.data() as Bang);
         });
 
         if (isModerator) {
@@ -81,12 +83,12 @@ export default function Event() {
     }, [bid, isModerator, ageConfirm]);
 
     useEffect(() => {
-        if (event && uid && event.moderators.includes(uid)) {
+        if (bang && uid && bang.moderators.includes(uid)) {
             setIsModerator(true);
         } else {
             setIsModerator(false);
         }
-    }, [uid, event]);
+    }, [uid, bang]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
@@ -122,24 +124,61 @@ export default function Event() {
     }
 
     function addModerator(mod: string) {
-        const collection = firebase.firestore().collection('events').doc(bid);
+        if (bang && !bang.moderators.includes(mod)) {
+            const collection = firebase.firestore().collection('events').doc(bid);
 
-        if (event && !event.moderators.includes(mod)) {
-            event.moderators.push(mod);
-            const mods = [...event.moderators];
-            setEvent({ ...event, moderators: mods });
-            collection.set(event, { merge: true });
+            bang.moderators.push(mod);
+            const mods = [...bang.moderators];
+            setBang({ ...bang, moderators: mods });
+            collection.set(bang, { merge: true });
         }
     }
 
     function removeModerator(mod: string) {
-        const collection = firebase.firestore().collection('events').doc(bid);
+        if (bang && bang.creatorId !== mod) {
+            const collection = firebase.firestore().collection('events').doc(bid);
 
-        if (event && event.creatorId !== mod) {
-            event.moderators.splice(event.moderators.indexOf(mod), 1);
-            const mods = [...event.moderators];
-            setEvent({ ...event, moderators: mods });
-            collection.set(event, { merge: true });
+            bang.moderators.splice(bang.moderators.indexOf(mod), 1);
+            const mods = [...bang.moderators];
+            setBang({ ...bang, moderators: mods });
+            collection.set(bang, { merge: true });
+        }
+    }
+
+    function editInfo() {
+        if (bang) {
+            return (
+                <div className="column overlay">
+                    <div className="overlay-bg" onClick={() => setOpenInfo(false)}></div>
+                    <div className="column overlay-container" >
+                        <h4>No change is saved until you click the update button.</h4>
+                        <form className="column" action="" onSubmit={(event) => handleSubmitInfo(event)}>
+                            <textarea name="info" rows={10} value={addNewLines(bang.information)} onChange={handleEditInfo}></textarea>
+                            <button className="btn btn-submit" type="submit">Update</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return null;
+        }
+    }
+
+    function handleEditInfo(event: ChangeEvent<any>) {
+        if (bang && event.target.value) {
+            const target = event.target;
+            const value = target.value;
+
+            setBang({ ...bang, information: addLinebreaks(value) });
+        }
+    }
+
+    function handleSubmitInfo(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        if (bang) {
+            const collection = firebase.firestore().collection('events').doc(bid);
+            collection.set(bang, { merge: true });
         }
     }
 
@@ -147,16 +186,24 @@ export default function Event() {
         return t.replaceAll('\\n', '\n');
     }
 
+    function addLinebreaks(t: string) {
+        return t.replaceAll('\n', '\\n');
+    }
+
     return (
         <div className="entry-list">
-            {event && <>
+            {bang && <>
                 <div className="column information-box">
                     {details && <DetailsOverlay text={details} setDetails={setDetails} />}
-                    <div className="event-info preserve-whitespace">{addNewLines(event.information)}</div>
+                    {isModerator && openInfo && editInfo()}
+                    <div className="event-info preserve-whitespace">
+                        {addNewLines(bang.information)}
+                        {isModerator && <FaEdit className="edit-info" onClick={() => setOpenInfo(true)} />}
+                    </div>
                     {isModerator && (
                         <ManageModerators
-                            creator={event.creatorId}
-                            mods={event.moderators}
+                            creator={bang.creatorId}
+                            mods={bang.moderators}
                             addModerator={addModerator}
                             removeModerator={removeModerator}
                         />
