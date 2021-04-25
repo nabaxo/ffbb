@@ -197,6 +197,7 @@ export default function Event() {
                     {details && <DetailsOverlay text={details} setDetails={setDetails} />}
                     {isModerator && openInfo && editInfo()}
                     <div className="event-info preserve-whitespace">
+                        <h3>{bang.title}</h3>
                         {addNewLines(bang.information)}
                         {isModerator && <FaEdit className="edit-info" onClick={() => setOpenInfo(true)} />}
                     </div>

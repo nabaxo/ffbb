@@ -178,7 +178,7 @@ export default function SubmitNewRequests(): JSX.Element {
     }
 
     return (
-        <form className="column submit-form" action="" onSubmit={(event) => handleSubmit(event)}>
+        <form className="column submit-form center" action="" onSubmit={(event) => handleSubmit(event)}>
             <div>
                 <strong>Would you like a beta?</strong>
                 <label><input name="requestBeta" onChange={handleChange} type="checkbox" />Yes</label>
@@ -214,10 +214,6 @@ export default function SubmitNewRequests(): JSX.Element {
                 />
             </div>
             <div>
-                <strong>Anything you'd like the mods to know?</strong>
-                <textarea className="form-input" name="authorWarnings" value={modMessage} onChange={handleChange} />
-            </div>
-            <div>
                 <strong>Summary</strong>
                 <textarea className="form-input" rows={5} name="summary" value={request?.summary} onChange={handleChange} required />
             </div>
@@ -227,6 +223,10 @@ export default function SubmitNewRequests(): JSX.Element {
                     <option value="1">Tier 1</option>
                     <option value="2">Tier 2</option>
                 </select>
+            </div>
+            <div>
+                <strong>Anything you'd like the mods to know?</strong>
+                <textarea className="form-input" name="authorWarnings" value={modMessage} onChange={handleChange} />
             </div>
             <div>
                 <input className="btn btn-approve" type="submit" value="Submit Request" />

@@ -6,6 +6,7 @@
     --border: 1px solid #cecece;
     --radius: 1ch;
     --light: #fcfaf1;
+    --mid: #a8a8a8;
     --dark: #282c34;
     --red: #ec1a47;
     --green: #57a125;
@@ -42,6 +43,11 @@ body {
     padding: 1ch;
 }
 
+.center {
+    width: fit-content;
+    margin: 0 auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
     :root {
         --animation: none;
@@ -59,7 +65,7 @@ header {
     min-width: 100%;
 }
 
-header h1 {
+header h3 {
     margin: .2rem 0;
 }
 
@@ -71,6 +77,7 @@ nav {
     flex-direction: column;
     align-items: center;
     font-size: 1rem;
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 
 nav ul {
@@ -91,20 +98,19 @@ nav li {
 
 nav li a {
     padding: 1ch 0;
-    font-size: .8rem;
+    font-size: 1.1rem;
     width: 8rem;
     height: 1rem;
-    background-color: var(--light);
-    border-radius: var(--radius);
     text-decoration: none;
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--light);
     transition: var(--animation);
+    border-block-end: 5px solid transparent;
 }
 
 nav li a:hover,
 .active {
-    background-color: #fff;
+    border-block-end: 5px solid var(--light);
 }
 
 .burger-menu {
@@ -144,9 +150,16 @@ footer a {
 .event-info {
     border: var(--border);
     border-radius: var(--radius);
-    background-color: var(--yellow-light);
+    background-color: #fff;
     padding: 1rem;
     position: relative;
+}
+
+.event-info h3 {
+    /* margin: 0; */
+    margin-block-start: 0;
+    padding-block-end: 1ch;
+    border-block-end: var(--border);
 }
 
 .edit-info {
@@ -233,12 +246,14 @@ fieldset {
 
 .moderator-box {
     border-radius: var(--radius);
+    background-color: #fff;
     border: var(--border);
 }
 
 .moderator-box>table {
     width: 40%;
     margin: 1ch;
+    border: var(--border)
 }
 
 .moderator-box summary {
@@ -442,6 +457,10 @@ form>div>strong {
 .char-input:focus,
 .pair-input:focus {
     outline: none;
+}
+
+.pair-input {
+    margin-block-end: 1ch;
 }
 
 .align-svg {

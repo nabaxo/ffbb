@@ -50,7 +50,7 @@ function App() {
         <Router history={history} >
             <div className="column">
                 <header>
-                    <h1>FicBang</h1>
+                    <h3>FicBang</h3>
                     <nav>
                         <ul>
                             {!isSignedIn && (
