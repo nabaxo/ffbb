@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
 import { FaEdit } from 'react-icons/fa';
-import { Entry, Bang } from './types';
+import { Entry, Bang, User } from './types';
 import RequestEntry from './RequestEntry';
 import { useParams } from 'react-router-dom';
 import DetailsOverlay from './DetailsOverlay';
@@ -27,6 +27,8 @@ export default function Event() {
     const [isModerator, setIsModerator] = useState<boolean>();
     const [details, setDetails] = useState<string>();
     const [openInfo, setOpenInfo] = useState<boolean>();
+    const userDocRef = firebase.firestore().collection('users').doc(uid);
+    const [joinedBangs, setJoinedBangs] = useState<string[]>();
 
     // Following is needed to force update when getting the modMessages separately
     const [, setForceUpdateHack] = useState<string>();
@@ -90,6 +92,14 @@ export default function Event() {
         }
     }, [uid, bang]);
 
+    useEffect(() => {
+        userDocRef.onSnapshot((doc) => {
+            const u = doc.data() as User;
+
+            u && setJoinedBangs(u.joinedEvents);
+        });
+    }, [uid, userDocRef]);
+
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         if (rawList) {
             const value = event.target.value.toLowerCase();
@@ -143,6 +153,12 @@ export default function Event() {
             setBang({ ...bang, moderators: mods });
             collection.set(bang, { merge: true });
         }
+    }
+
+    function joinBang() {
+        userDocRef.update({
+            joinedEvents: firebase.firestore.FieldValue.arrayUnion(bid)
+        });
     }
 
     function editInfo() {
@@ -212,6 +228,7 @@ export default function Event() {
                     <span className="btn-row">
                         <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
                         <a className="btn btn-submit" href={'/event/' + bid + '/submit'} >Submit New!</a>
+                        {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </span>
                     {!isModerator && (
                         <fieldset>

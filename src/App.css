@@ -182,6 +182,7 @@ footer a {
 .btn-row {
     display: flex;
     flex-direction: row;
+    gap: 1ch;
 }
 
 .btn {
@@ -240,7 +241,6 @@ footer a {
     border: var(--border);
     font-size: 1.2rem;
     text-align: center;
-    margin-inline-end: 1rem;
 }
 
 fieldset {
