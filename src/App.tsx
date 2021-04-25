@@ -48,7 +48,7 @@ function App() {
 
     return (
         <Router history={history} >
-            <div className="column">
+            <div className="column no-padding">
                 <header>
                     <h3>FicBang</h3>
                     <nav>
