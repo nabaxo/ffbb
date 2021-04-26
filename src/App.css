@@ -334,12 +334,20 @@ tr {
 }
 
 tr:hover:not(thead tr, .mod-bar) {
-    filter: brightness(.9) saturate(2);
+    filter: brightness(.9);
 }
 
 th,
 td {
     padding: .5rem;
+}
+
+.settings-table {
+    width: 60vw;
+}
+
+.settings-table>tbody>tr>td:last-of-type {
+    text-align: right;
 }
 
 .pointer {
@@ -539,6 +547,10 @@ form>div>strong {
     }
 
     .overlay-container {
+        width: auto;
+    }
+
+    .settings-table {
         width: auto;
     }
 }

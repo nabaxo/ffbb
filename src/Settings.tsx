@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { Bang, User } from './types';
 
@@ -14,40 +14,50 @@ export default function Settings() {
     const [joinedBangs, setJoinedBangs] = useState<BangEntry[]>();
 
     useEffect(() => {
-        if (user && user.createdEvents.length) {
-            const eventsCollection = firebase.firestore().collection('events');
+        if (user) {
+            if (user.createdEvents.length) {
+                const eventsCollection = firebase.firestore().collection('events');
 
-            const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
-                .onSnapshot((snapshot) => {
-                    setCreatedBangs(snapshot.docs.map(doc => {
-                        const b: BangEntry = {
-                            bid: doc.id,
-                            bang: doc.data() as Bang
-                        };
-                        return b;
-                    }));
-                });
+                const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
+                    .onSnapshot((snapshot) => {
+                        setCreatedBangs(snapshot.docs.map(doc => {
+                            const b: BangEntry = {
+                                bid: doc.id,
+                                bang: doc.data() as Bang
+                            };
+                            return b;
+                        }));
+                    });
 
-            return unsubscribe;
+                return unsubscribe;
+            }
+            else if (!user.createdEvents.length) {
+                setCreatedBangs(undefined);
+            }
         }
     }, [user]);
 
     useEffect(() => {
-        if (user && user.joinedEvents.length) {
-            const eventsCollection = firebase.firestore().collection('events');
+        if (user) {
+            if (user.joinedEvents.length) {
+                const eventsCollection = firebase.firestore().collection('events');
 
-            const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
-                .onSnapshot((snapshot) => {
-                    setJoinedBangs(snapshot.docs.map(doc => {
-                        const b: BangEntry = {
-                            bid: doc.id,
-                            bang: doc.data() as Bang
-                        };
-                        return b;
-                    }));
-                });
+                const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
+                    .onSnapshot((snapshot) => {
+                        setJoinedBangs(snapshot.docs.map(doc => {
+                            const b: BangEntry = {
+                                bid: doc.id,
+                                bang: doc.data() as Bang
+                            };
+                            return b;
+                        }));
+                    });
 
-            return unsubscribe;
+                return unsubscribe;
+            }
+            else if (!user.joinedEvents.length) {
+                setJoinedBangs(undefined);
+            }
         }
     }, [user]);
 
@@ -71,37 +81,53 @@ export default function Settings() {
         }
     }
 
+    function leaveEvent(eventId: string) {
+        if (window.confirm('Are you sure?')) {
+            if (userId && user) {
+                const userDocRef = firebase.firestore().collection('users').doc(userId);
+
+                user.joinedEvents.splice(user.joinedEvents.indexOf(eventId), 1);
+                const jbs = [...user.joinedEvents];
+                setUser({ ...user, joinedEvents: jbs });
+                userDocRef.set(user, { merge: true });
+            }
+        }
+    }
+
     return (
         <div className="column" >
             <h3>Hello {user?.displayName}</h3>
             <h4>My events</h4>
             {createdBangs && createdBangs.length !== 0 ?
-                <div>
-                    <table>
-                        <tbody>
-                            {createdBangs.map(b => {
-                                return (
-                                    <tr key={'created_' + b.bid}>
-                                        <td><a href={'event/' + b.bid}>{b.bang.title}</a></td>
-                                        <td><button className="btn btn-delete" onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                <table className="settings-table">
+                    <tbody>
+                        {createdBangs.map(b => {
+                            return (
+                                <tr key={'created_' + b.bid}>
+                                    <td><a href={'event/' + b.bid}>{b.bang.title}</a></td>
+                                    <td><button className="btn btn-delete" onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
                 :
                 <div>You haven't created any events!</div>
             }
             <h4>Joined events</h4>
             {joinedBangs && joinedBangs.length !== 0 ?
-                <div>
-                    <ul>
+                <table className="settings-table">
+                    <tbody>
                         {joinedBangs.map(j => {
-                            return <li key={'joined_' + j.bid}><a href={'event/' + j.bid}>{j.bang.title}</a></li>;
+                            return (
+                                <tr key={'joined_' + j.bid}>
+                                    <td><a href={'event/' + j.bid}>{j.bang.title}</a></td>
+                                    <td><button className="btn btn-warning" onClick={() => leaveEvent(j.bid)}>Leave event</button></td>
+                                </tr>
+                            );
                         })}
-                    </ul>
-                </div>
+                    </tbody>
+                </table>
                 :
                 <div>You haven't joined any events!</div>
             }
