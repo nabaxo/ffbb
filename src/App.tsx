@@ -18,7 +18,7 @@ function App() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
 
     useEffect(() => {
-        return firebase.auth().onAuthStateChanged((u) => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((u) => {
             if (u) {
                 const collection = firebase.firestore().collection('users');
                 collection.doc(u.uid).onSnapshot(() => {
@@ -29,6 +29,8 @@ function App() {
                 logOut();
             }
         });
+
+        return unsubscribe;
     }, []);
 
     useEffect(() => {

@@ -17,7 +17,7 @@ export default function Settings() {
         if (user) {
             const eventsCollection = firebase.firestore().collection('events');
 
-            return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
+            const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
                 .onSnapshot((snapshot) => {
                     setCreatedBangs(snapshot.docs.map(doc => {
                         const b: BangEntry = {
@@ -27,6 +27,8 @@ export default function Settings() {
                         return b;
                     }));
                 });
+
+            return unsubscribe;
         }
     }, [user]);
 
@@ -34,7 +36,7 @@ export default function Settings() {
         if (user) {
             const eventsCollection = firebase.firestore().collection('events');
 
-            return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
+            const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
                 .onSnapshot((snapshot) => {
                     setJoinedBangs(snapshot.docs.map(doc => {
                         const b: BangEntry = {
@@ -44,6 +46,8 @@ export default function Settings() {
                         return b;
                     }));
                 });
+
+            return unsubscribe;
         }
     }, [user]);
 
@@ -51,9 +55,11 @@ export default function Settings() {
         if (userId) {
             const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-            return userDocRef.onSnapshot((doc) => {
+            const unsubscribe = userDocRef.onSnapshot((doc) => {
                 setUser(doc.data() as User);
             });
+
+            return unsubscribe;
         }
     }, [userId]);
 

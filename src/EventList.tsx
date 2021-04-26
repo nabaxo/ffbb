@@ -11,7 +11,7 @@ export default function EventList() {
     useEffect(() => {
         const collection = firebase.firestore().collection('events');
 
-        return collection.where('public', '==', true).onSnapshot((snapshot) => {
+        const unsubscribe = collection.where('public', '==', true).onSnapshot((snapshot) => {
             const r = snapshot.docs.map(d => {
                 return {
                     id: d.id,
@@ -20,6 +20,8 @@ export default function EventList() {
             });
             setList(r);
         });
+
+        return unsubscribe;
     }, []);
 
     return (

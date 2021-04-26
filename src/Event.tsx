@@ -46,7 +46,7 @@ export default function Event() {
         });
 
         if (isModerator) {
-            return collection.onSnapshot((snapshot) => {
+            const unsubscribe = collection.onSnapshot((snapshot) => {
                 setRawList(snapshot.docs.map(d => {
                     const e: listEntry = {
                         id: d.id,
@@ -61,9 +61,11 @@ export default function Event() {
                     return e;
                 }));
             });
+
+            return unsubscribe;
         } else {
             if (ageConfirm) {
-                return collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
+                const unsubscribe = collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
                     setRawList(snapshot.docs.map(d => {
                         return ({
                             id: d.id,
@@ -71,8 +73,10 @@ export default function Event() {
                         });
                     }));
                 });
+
+                return unsubscribe;
             } else {
-                return collection.where('isPublished', '==', true).where('ageRating', '==', 'G-T').onSnapshot((snapshot) => {
+                const unsubscribe = collection.where('isPublished', '==', true).where('ageRating', '==', 'G-T').onSnapshot((snapshot) => {
                     setRawList(snapshot.docs.map(d => {
                         return ({
                             id: d.id,
@@ -80,6 +84,8 @@ export default function Event() {
                         });
                     }));
                 });
+
+                return unsubscribe;
             }
         }
     }, [bid, isModerator, ageConfirm]);
@@ -93,11 +99,13 @@ export default function Event() {
     }, [uid, bang]);
 
     useEffect(() => {
-        userDocRef.onSnapshot((doc) => {
+        const unsubscribe = userDocRef.onSnapshot((doc) => {
             const u = doc.data() as User;
 
             u && setJoinedBangs(u.joinedEvents);
         });
+
+        return unsubscribe;
     }, [uid, userDocRef]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {

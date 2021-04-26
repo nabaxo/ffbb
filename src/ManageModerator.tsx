@@ -23,7 +23,7 @@ export default function ManageModerators({ creator, mods, addModerator, removeMo
     useEffect(() => {
         const collection = firebase.firestore().collection('users').where('uid', 'in', mods);
 
-        return collection.onSnapshot((snapshot) => {
+        const unsubscribe = collection.onSnapshot((snapshot) => {
             setModeratorList(snapshot.docs.map(d => {
                 const u = d.data() as User;
                 const m: Moderator = {
@@ -35,6 +35,8 @@ export default function ManageModerators({ creator, mods, addModerator, removeMo
                 return m;
             }));
         });
+
+        return unsubscribe;
 
     }, [mods]);
 
