@@ -6,13 +6,13 @@ interface IProps {
     entryId: string;
     entry: Entry;
     modMessage?: string;
-    eventId: string;
+    bangId: string;
     isModerator?: boolean;
     setDetails: (text: string) => void;
 }
 
-export default function RequestEntry({ entryId, entry, modMessage, isModerator, eventId, setDetails }: IProps) {
-    const collection = firebase.firestore().collection('events').doc(eventId).collection('requests');
+export default function RequestEntry({ entryId, entry, modMessage, isModerator, bangId, setDetails }: IProps) {
+    const collection = firebase.firestore().collection('events').doc(bangId).collection('requests');
     const [requestUser, setRequestUser] = useState<User>();
 
     function approve() {

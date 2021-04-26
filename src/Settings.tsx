@@ -2,35 +2,30 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { Bang, User } from './types';
 
+interface BangEntry {
+    bid: string;
+    bang: Bang;
+}
+
 export default function Settings() {
     const userId = localStorage.getItem('uid');
     const [user, setUser] = useState<User>();
-    const [createdBangs, setCreatedBangs] = useState<{
-        bid: string,
-        bang: Bang;
-    }[]>();
-    const [joinedBangs, setJoinedBangs] = useState<{
-        bid: string,
-        bang: Bang;
-    }[]>();
+    const [createdBangs, setCreatedBangs] = useState<BangEntry[]>();
+    const [joinedBangs, setJoinedBangs] = useState<BangEntry[]>();
 
     useEffect(() => {
         if (user) {
             const eventsCollection = firebase.firestore().collection('events');
-            const cBangs: {
-                bid: string,
-                bang: Bang;
-            }[] = [];
 
             return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
                 .onSnapshot((snapshot) => {
-                    snapshot.forEach((doc) => {
-                        cBangs.push({
+                    setCreatedBangs(snapshot.docs.map(doc => {
+                        const b: BangEntry = {
                             bid: doc.id,
                             bang: doc.data() as Bang
-                        });
-                    });
-                    setCreatedBangs(cBangs);
+                        };
+                        return b;
+                    }));
                 });
         }
     }, [user]);
@@ -38,20 +33,16 @@ export default function Settings() {
     useEffect(() => {
         if (user) {
             const eventsCollection = firebase.firestore().collection('events');
-            const jBangs: {
-                bid: string,
-                bang: Bang;
-            }[] = [];
 
             return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
                 .onSnapshot((snapshot) => {
-                    snapshot.forEach((doc) => {
-                        jBangs.push({
+                    setJoinedBangs(snapshot.docs.map(doc => {
+                        const b: BangEntry = {
                             bid: doc.id,
                             bang: doc.data() as Bang
-                        });
-                    });
-                    setJoinedBangs(jBangs);
+                        };
+                        return b;
+                    }));
                 });
         }
     }, [user]);
@@ -84,7 +75,7 @@ export default function Settings() {
                         <tbody>
                             {createdBangs.map(b => {
                                 return (
-                                    <tr key={b.bid}>
+                                    <tr key={'created_' + b.bid}>
                                         <td><a href={'event/' + b.bid}>{b.bang.title}</a></td>
                                         <td><button className="btn btn-delete" onClick={() => deleteEvent(b.bid)}>Delete event</button></td>
                                     </tr>
@@ -101,7 +92,7 @@ export default function Settings() {
                 <div>
                     <ul>
                         {joinedBangs.map(j => {
-                            return <li key={j.bid}><a href={'event/' + j.bid}>{j.bang.title}</a></li>;
+                            return <li key={'joined_' + j.bid}><a href={'event/' + j.bid}>{j.bang.title}</a></li>;
                         })}
                     </ul>
                 </div>

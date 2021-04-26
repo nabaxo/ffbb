@@ -266,7 +266,7 @@ export default function Event() {
                                 entry={e.entry}
                                 modMessage={isModerator ? e.modMessage : undefined}
                                 isModerator={isModerator ? true : false}
-                                eventId={bid}
+                                bangId={bid}
                                 setDetails={setDetails}
                             />)}
                         </tbody>
