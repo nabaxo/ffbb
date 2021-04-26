@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { Bang, User } from './types';
 
 export default function Settings() {
-    const userId = firebase.auth().currentUser?.uid;
+    const userId = localStorage.getItem('uid');
     const [user, setUser] = useState<User>();
     const [createdBangs, setCreatedBangs] = useState<{
         bid: string,
@@ -21,12 +21,8 @@ export default function Settings() {
                 bid: string,
                 bang: Bang;
             }[] = [];
-            const jBangs: {
-                bid: string,
-                bang: Bang;
-            }[] = [];
 
-            eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
+            return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
                 .onSnapshot((snapshot) => {
                     snapshot.forEach((doc) => {
                         cBangs.push({
@@ -36,7 +32,18 @@ export default function Settings() {
                     });
                     setCreatedBangs(cBangs);
                 });
-            eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (user) {
+            const eventsCollection = firebase.firestore().collection('events');
+            const jBangs: {
+                bid: string,
+                bang: Bang;
+            }[] = [];
+
+            return eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
                 .onSnapshot((snapshot) => {
                     snapshot.forEach((doc) => {
                         jBangs.push({
@@ -50,11 +57,13 @@ export default function Settings() {
     }, [user]);
 
     useEffect(() => {
-        const userDocRef = firebase.firestore().collection('users').doc(userId);
+        if (userId) {
+            const userDocRef = firebase.firestore().collection('users').doc(userId);
 
-        userDocRef.get().then((doc) => {
-            setUser(doc.data() as User);
-        });
+            return userDocRef.onSnapshot((doc) => {
+                setUser(doc.data() as User);
+            });
+        }
     }, [userId]);
 
     function deleteEvent(eventId: string) {
