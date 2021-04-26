@@ -14,7 +14,7 @@ export default function Settings() {
     const [joinedBangs, setJoinedBangs] = useState<BangEntry[]>();
 
     useEffect(() => {
-        if (user) {
+        if (user && user.createdEvents.length) {
             const eventsCollection = firebase.firestore().collection('events');
 
             const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
@@ -33,7 +33,7 @@ export default function Settings() {
     }, [user]);
 
     useEffect(() => {
-        if (user) {
+        if (user && user.joinedEvents.length) {
             const eventsCollection = firebase.firestore().collection('events');
 
             const unsubscribe = eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
