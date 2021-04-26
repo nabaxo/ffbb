@@ -82,6 +82,7 @@ nav {
     flex-direction: column;
     align-items: center;
     font-size: 1rem;
+    /* justify-content: flex-end; */
     /* border-radius: var(--radius) var(--radius) 0 0; */
 }
 
@@ -241,6 +242,7 @@ footer a {
     border: var(--border);
     font-size: 1.2rem;
     text-align: center;
+    flex: 2;
 }
 
 fieldset {

@@ -252,33 +252,38 @@ export default function Event() {
                     )}
                 </div>
                 <div className="event-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Wants a beta</th>
-                                <th>Rating</th>
-                                <th>Archive Warnings</th>
-                                <th>Characters</th>
-                                <th>Pairings</th>
-                                <th>Tags</th>
-                                <th>Summary</th>
-                                <th>Tier</th>
-                                {isModerator && <th>Message to mods</th>}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {list && list.map(e => <RequestEntry
-                                key={e.id}
-                                entryId={e.id}
-                                entry={e.entry}
-                                modMessage={isModerator ? e.modMessage : undefined}
-                                isModerator={isModerator ? true : false}
-                                bangId={bid}
-                                setDetails={setDetails}
-                            />)}
-                        </tbody>
-                    </table>
+                    {list && list.length ? (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Wants a beta</th>
+                                    <th>Rating</th>
+                                    <th>Archive Warnings</th>
+                                    <th>Characters</th>
+                                    <th>Pairings</th>
+                                    <th>Tags</th>
+                                    <th>Summary</th>
+                                    <th>Tier</th>
+                                    {isModerator && <th>Message to mods</th>}
+                                </tr>
+                            </thead><tbody>
+                                {list.map(e => <RequestEntry
+                                    key={e.id}
+                                    entryId={e.id}
+                                    entry={e.entry}
+                                    modMessage={isModerator ? e.modMessage : undefined}
+                                    isModerator={isModerator ? true : false}
+                                    bangId={bid}
+                                    setDetails={setDetails}
+                                />)}
+                            </tbody>
+                        </table>
+                    )
+                        :
+                        <div className="center">
+                            <h3>There are no submissions yet!</h3>
+                        </div>}
                 </div>
             </>}
         </div>
