@@ -27,27 +27,23 @@ export default function Settings() {
             }[] = [];
 
             eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.createdEvents)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+                .onSnapshot((snapshot) => {
+                    snapshot.forEach((doc) => {
                         cBangs.push({
                             bid: doc.id,
                             bang: doc.data() as Bang
                         });
                     });
-                }).then(() => {
                     setCreatedBangs(cBangs);
                 });
             eventsCollection.where(firebase.firestore.FieldPath.documentId(), 'in', user.joinedEvents)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+                .onSnapshot((snapshot) => {
+                    snapshot.forEach((doc) => {
                         jBangs.push({
                             bid: doc.id,
                             bang: doc.data() as Bang
                         });
                     });
-                }).then(() => {
                     setJoinedBangs(jBangs);
                 });
         }
