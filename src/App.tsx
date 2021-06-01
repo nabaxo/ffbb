@@ -53,7 +53,7 @@ function App() {
             <div className="column no-padding">
                 <header>
                     <h3>FicBang</h3>
-                    <nav>
+                    <nav className={showMenu ? ' nav-open' : 'nav-closed'}>
                         <ul>
                             {!isSignedIn && (
                                 <li>

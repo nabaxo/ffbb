@@ -77,7 +77,7 @@ header h3 {
 nav {
     background-color: #6da3da;
     width: 100%;
-    height: 3rem;
+    max-height: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -288,12 +288,11 @@ fieldset {
 }
 
 .event-table {
-    width: 100%;
-    margin: 0;
+    max-width: 100%;
+    margin-block-end: 1rem;
 }
 
 table {
-    margin-block: 1rem;
     border-collapse: collapse;
     border: var(--border) 0;
     margin: 0 1rem;
@@ -503,7 +502,15 @@ form>div>strong {
 @media screen and (max-width: 576px) {
 
     nav {
-        height: fit-content;
+        transition: var(--animation);
+    }
+
+    .nav-open {
+        max-height: 16rem;
+    }
+
+    .nav-closed {
+        max-height: 4rem;
     }
 
     nav ul {

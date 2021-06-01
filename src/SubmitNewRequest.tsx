@@ -18,7 +18,7 @@ export default function SubmitNewRequests(): JSX.Element {
     const [characters, setCharacters] = useState<string[]>(['']);
     const [pairings, setPairings] = useState<Pair[]>([{ a: '', b: '' }]);
     const [request, setRequest] = useState<Entry>({
-        uid: localStorage.getItem('uid') || '',
+        uid: localStorage.getItem('uid') || firebase.auth().currentUser?.uid || '',
         requestBeta: false,
         ageRating: 'G-T',
         authorRequestAge: false,
@@ -226,6 +226,7 @@ export default function SubmitNewRequests(): JSX.Element {
             </div>
             <div>
                 <strong>Anything you'd like the mods to know?</strong>
+                <span>(This wont be visible for anyone except the mods of the event.)</span>
                 <textarea className="form-input" name="authorWarnings" value={modMessage} onChange={handleChange} />
             </div>
             <div>

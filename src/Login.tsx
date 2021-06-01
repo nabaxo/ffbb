@@ -24,6 +24,7 @@ export default function Login() {
                         createdEvents: [],
                     };
                     collection.doc(authResult.user.uid).set(newUser);
+                    localStorage.setItem('uid', newUser.uid);
                 }
                 history.goBack();
                 return false;
