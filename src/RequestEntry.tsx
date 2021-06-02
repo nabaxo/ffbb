@@ -32,13 +32,15 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
     }
 
     useEffect(() => {
-        const docRef = firebase.firestore().collection('users').doc(entry.uid);
+        if (entry.uid && isModerator) {
+            const docRef = firebase.firestore().collection('users').doc(entry.uid);
 
-        docRef.get().then((doc) => {
-            setRequestUser(doc.data() as User);
-        });
+            docRef.get().then((doc) => {
+                setRequestUser(doc.data() as User);
+            });
+        }
 
-    }, [entry.uid]);
+    }, [entry.uid, isModerator]);
 
     function addLineBreaks(t: string) {
         const text = t.replaceAll('\\n', '\n');
@@ -76,7 +78,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                 <tr className="mod-bar">
                     <td><button className={entry.isPublished ? 'btn btn-warning' : 'btn btn-approve'} onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
                     <td><button className="btn btn-delete" onClick={confirmDialog}>Delete</button></td>
-                    <td colSpan={8}>Submitted by: {requestUser && requestUser.displayName}</td>
+                    <td colSpan={8}>Submitted by: {requestUser ? requestUser.displayName : '[Error: Unknown User]'}</td>
                 </tr>
             )}
         </>
