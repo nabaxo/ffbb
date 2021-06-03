@@ -258,7 +258,7 @@ fieldset {
     border: var(--border);
 }
 
-.moderator-box>table {
+.moderator-box table {
     width: 40%;
     margin: 1ch;
     border: var(--border)
@@ -552,6 +552,15 @@ form>div>strong {
         visibility: hidden;
         height: 0;
         opacity: 0;
+    }
+
+    .moderator-box>div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .moderator-box table {
+        width: unset;
     }
 
     .btn-row {

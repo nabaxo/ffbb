@@ -65,35 +65,37 @@ export default function ManageModerators({ creator, mods, addModerator, removeMo
     return (
         <details className="moderator-box">
             <summary>Manage Moderators</summary>
-            {moderatorList && (
-                <table>
-                    <tbody>
-                        {moderatorList.map(m => {
-                            return (
-                                <tr key={m.uid}>
-                                    <td>{m.displayName}</td>
-                                    <td style={{ textAlign: 'right' }}>
-                                        {m.uid !== creator ?
-                                            <button className="btn btn-delete" onClick={() => removeModerator(m.uid)}>Remove</button>
-                                            :
-                                            <span> <FaCrown /></span>
-                                        }
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            )}
-            <form action="" onSubmit={(event) => handleSubmit(event)}>
-                <fieldset>
-                    <legend>Add moderator</legend>
-                    <span className="row add-mod-row">
-                        <input className="mod-input" type="email" placeholder="email" name="email" value={newMod} onChange={handleChange} />
-                        <button className="btn btn-full-height btn-approve" type="submit">Add</button>
-                    </span>
-                </fieldset>
-            </form>
+            <div>
+                {moderatorList && (
+                    <table>
+                        <tbody>
+                            {moderatorList.map(m => {
+                                return (
+                                    <tr key={m.uid}>
+                                        <td>{m.displayName}</td>
+                                        <td style={{ textAlign: 'right' }}>
+                                            {m.uid !== creator ?
+                                                <button className="btn btn-delete" onClick={() => removeModerator(m.uid)}>Remove</button>
+                                                :
+                                                <span> <FaCrown style={{ color: '#FFA500' }} /></span>
+                                            }
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
+                <form action="" onSubmit={(event) => handleSubmit(event)}>
+                    <fieldset>
+                        <legend>Add moderator</legend>
+                        <span className="row add-mod-row">
+                            <input className="mod-input" type="email" placeholder="email" name="email" value={newMod} onChange={handleChange} />
+                            <button className="btn btn-full-height btn-approve" type="submit">Add</button>
+                        </span>
+                    </fieldset>
+                </form>
+            </div>
         </details>
     );
 }
