@@ -65,13 +65,13 @@ function App() {
                                     <li className="burger-menu">
                                         <ImMenu onClick={menuButton} />
                                     </li>
-                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                    <li className={!showMenu ? 'close-menu' : ''} onClick={() => setShowMenu(false)}>
                                         <NavLink activeClassName="active" to='/list'>List of Events</NavLink>
                                     </li>
-                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                    <li className={!showMenu ? 'close-menu' : ''} onClick={() => setShowMenu(false)}>
                                         <NavLink activeClassName="active" to='/create-event'>Create Event</NavLink>
                                     </li>
-                                    <li className={!showMenu ? 'close-menu' : ''}>
+                                    <li className={!showMenu ? 'close-menu' : ''} onClick={() => setShowMenu(false)}>
                                         <NavLink activeClassName="active" to='/settings'>My Events</NavLink>
                                     </li>
                                     <li className={!showMenu ? 'close-menu' : ''}>

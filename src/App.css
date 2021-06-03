@@ -193,6 +193,7 @@ footer a {
     border-radius: var(--radius);
     border: none;
     transition: var(--animation);
+    text-align: center;
 }
 
 .btn:hover {
@@ -551,6 +552,24 @@ form>div>strong {
         visibility: hidden;
         height: 0;
         opacity: 0;
+    }
+
+    .btn-row {
+        flex-direction: column-reverse;
+    }
+
+    .add-mod-row {
+        flex-direction: column;
+    }
+
+    .filter {
+        width: auto;
+    }
+
+    .btn-new-summary,
+    .add-mod-row .btn {
+        min-width: 12ch;
+        align-self: flex-end;
     }
 
     .pairings {

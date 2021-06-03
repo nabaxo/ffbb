@@ -233,11 +233,11 @@ export default function Event() {
                             removeModerator={removeModerator}
                         />
                     )}
-                    <span className="btn-row">
+                    <div className="btn-row">
                         <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                        <a className="btn btn-submit" href={'/event/' + bid + '/submit'} >Submit New!</a>
+                        <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
-                    </span>
+                    </div>
                     {!isModerator && (
                         <fieldset>
                             <input
