@@ -266,8 +266,13 @@ fieldset {
 .moderator-box summary {
     padding: 1ch;
     cursor: pointer;
-    list-style-type: none;
+    /* list-style-type: none; */
     background-color: var(--body-color);
+    transition: var(--animation);
+}
+
+.moderator-box summary:hover {
+    color: #666;
 }
 
 .moderator-box form {
