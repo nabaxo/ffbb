@@ -45,7 +45,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
     function addLineBreaks(t: string) {
         const text = t.replaceAll('\\n', '\n');
         if (text.length > 200) {
-            return <p className="pointer preserve-whitespace" onClick={() => setDetails(text)}>{text.slice(0, 200).trimEnd() + "..."}</p>;
+            return <p className="pointer preserve-whitespace" onClick={() => setDetails(text)}>{text.slice(0, 200).trimEnd() + " ...(show more)"}</p>;
         }
         return <p className="preserve-whitespace">{text}</p>;
     }
@@ -59,7 +59,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                     <td>{entry.ageRating}</td>
                     <td>{entry.archiveWarnings?.join(', ')}</td>
                     <td>{entry.characters.join(', ')}</td>
-                    <td>{entry.pairings.map(p => { return [p.a, p.b].join(' x '); }).map((pair, i) => {
+                    <td>{entry.pairings && entry.pairings.map(p => { return [p.a, p.b].join(' x '); }).map((pair, i) => {
                         return (
                             <Fragment key={i}>
                                 {pair}
