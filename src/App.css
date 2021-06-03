@@ -353,6 +353,15 @@ td {
     cursor: pointer;
 }
 
+.show-more {
+    color: #777;
+    transition: var(--animation);
+}
+
+.show-more:hover {
+    color: #aaa
+}
+
 .overlay {
     position: fixed;
     top: 0;

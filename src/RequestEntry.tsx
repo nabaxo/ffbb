@@ -45,7 +45,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
     function addLineBreaks(t: string) {
         const text = t.replaceAll('\\n', '\n');
         if (text.length > 200) {
-            return <p className="pointer preserve-whitespace" onClick={() => setDetails(text)}>{text.slice(0, 200).trimEnd() + " ...(show more)"}</p>;
+            return <p className="pointer preserve-whitespace" onClick={() => setDetails(text)}>{text.slice(0, 200).trimEnd() + '... '}<em className="show-more">(show more)</em></p>;
         }
         return <p className="preserve-whitespace">{text}</p>;
     }
