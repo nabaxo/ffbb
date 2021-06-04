@@ -175,10 +175,10 @@ export default function Event() {
                 <div className="column overlay">
                     <div className="overlay-bg" onClick={() => setOpenInfo(false)}></div>
                     <div className="column overlay-container" >
-                        <h4>No change is saved until you click the update button.</h4>
+                        <div className="info">No change is saved until you click the update button.</div>
                         <form className="column" action="" onSubmit={(event) => handleSubmitInfo(event)}>
                             <textarea name="info" rows={10} value={addNewLines(bang.information)} onChange={handleEditInfo}></textarea>
-                            <button className="btn btn-submit" type="submit">Update</button>
+                            <button className="btn btn-submit btn-update" type="submit">Update</button>
                         </form>
                     </div>
                 </div>

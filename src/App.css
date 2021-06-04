@@ -171,13 +171,27 @@ footer a {
 .edit-info {
     font-size: 1.5rem;
     position: absolute;
-    bottom: 1ch;
+    top: 1ch;
     right: 1ch;
     transition: var(--animation);
 }
 
 .edit-info:hover {
     color: var(--orange)
+}
+
+.info {
+    border: var(--border);
+    border-radius: var(--radius);
+    background-color: var(--yellow-light);
+    margin: 1ch;
+    padding: 1ch;
+}
+
+.btn-update {
+    width: fit-content;
+    align-self: flex-end;
+    margin-block-start: 1ch;
 }
 
 .btn-row {
@@ -331,7 +345,8 @@ tr:nth-child(even) {
 
 
 .not-approved {
-    background-color: #f0bec4 !important;
+    background-color: #d65039 !important;
+    color: var(--light);
 }
 
 tr {
