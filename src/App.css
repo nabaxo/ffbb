@@ -345,7 +345,7 @@ tr:nth-child(even) {
 
 
 .not-approved {
-    background-color: #d65039 !important;
+    background-color: #bb4d53 !important;
     color: var(--light);
 }
 
@@ -375,7 +375,7 @@ td {
 }
 
 .show-more {
-    color: #777;
+    color: #a3a3a3;
     transition: var(--animation);
 }
 
