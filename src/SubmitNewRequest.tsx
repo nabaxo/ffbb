@@ -37,17 +37,28 @@ export default function SubmitNewRequests(): JSX.Element {
             request.archiveWarnings = ['creator chose not to use archive warnings'];
         }
 
-        const docRef = collection.doc();
-
-        const newRequest: Entry = { ...request, summary: addNewLines(request.summary) };
-
-        docRef.set(newRequest);
-        docRef.collection('private').doc('private').set({ modMessage: addNewLines(modMessage) });
-
-        userDocRef.update({
-            joinedEvents: firebase.firestore.FieldValue.arrayUnion(id)
+        firebase.auth().onAuthStateChanged(u => {
+            if (u) {
+                request.uid = u.uid;
+                localStorage.setItem('uid', u.uid);
+            }
         });
-        history.push('/event/' + id);
+
+        if (request.uid !== '') {
+            const docRef = collection.doc();
+
+            const newRequest: Entry = { ...request, summary: addNewLines(request.summary) };
+
+            docRef.set(newRequest);
+            docRef.collection('private').doc('private').set({ modMessage: addNewLines(modMessage) });
+
+            userDocRef.update({
+                joinedEvents: firebase.firestore.FieldValue.arrayUnion(id)
+            });
+            history.push('/event/' + id);
+        } else {
+            alert("Something went wrong, try again!");
+        }
     }
 
     function addNewLines(t: string) {
