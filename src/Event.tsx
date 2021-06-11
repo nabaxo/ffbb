@@ -278,6 +278,11 @@ export default function Event() {
                                     setDetails={setDetails}
                                 />)}
                             </tbody>
+                            {isModerator && <tfoot>
+                                <tr>
+                                    <td colSpan={5}>Total number of sumbission are: {list.length}</td>
+                                </tr>
+                            </tfoot>}
                         </table>
                     )
                         :
