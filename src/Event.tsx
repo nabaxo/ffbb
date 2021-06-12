@@ -99,13 +99,15 @@ export default function Event() {
     }, [uid, bang]);
 
     useEffect(() => {
-        const unsubscribe = userDocRef.onSnapshot((doc) => {
-            const u = doc.data() as User;
+        if (uid) {
+            const unsubscribe = userDocRef.onSnapshot((doc) => {
+                const u = doc.data() as User;
 
-            u && setJoinedBangs(u.joinedEvents);
-        });
+                u && setJoinedBangs(u.joinedEvents);
+            });
 
-        return unsubscribe;
+            return unsubscribe;
+        }
     }, [uid, userDocRef]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {

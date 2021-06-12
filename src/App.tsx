@@ -26,7 +26,7 @@ function App() {
                     localStorage.setItem('uid', u.uid);
                 });
             } else {
-                logOut();
+                setIsSignedIn(false);
             }
         });
 
@@ -111,6 +111,12 @@ function App() {
                         <Switch>
                             <Route path='/login'>
                                 <Login />
+                            </Route>
+                            <Route exact path='/event/:id/submit'>
+                                <Redirect to='/login' />
+                            </Route>
+                            <Route exact path='/event/:id'>
+                                <Event />
                             </Route>
                         </Switch>
                     )}
