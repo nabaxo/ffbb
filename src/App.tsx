@@ -112,9 +112,6 @@ function App() {
                             <Route path='/login'>
                                 <Login />
                             </Route>
-                            <Route exact path='/event/:id/submit'>
-                                <Redirect to='/login' />
-                            </Route>
                             <Route exact path='/event/:id'>
                                 <Event />
                             </Route>

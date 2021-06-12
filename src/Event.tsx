@@ -237,9 +237,10 @@ export default function Event() {
                     )}
                     <div className="btn-row">
                         <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                        <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>
+                        {uid && <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>}
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </div>
+                    {!uid && <div><span>Login to submit!</span></div>}
                     {!isModerator && (
                         <fieldset>
                             <input
