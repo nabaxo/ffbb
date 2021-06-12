@@ -39,6 +39,7 @@ export interface Bang {
     creatorName: string;
     public: boolean;
     moderators: string[];
+    isOpen: boolean;
 }
 
 export interface User {

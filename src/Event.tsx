@@ -200,6 +200,19 @@ export default function Event() {
         }
     }
 
+    function handleCloseEvent() {
+        if (bang) {
+            const collection = firebase.firestore().collection('events').doc(bid);
+
+            const open = !bang.isOpen;
+
+            setBang({ ...bang, isOpen: open });
+            collection.update({
+                isOpen: open
+            });
+        }
+    }
+
     function handleSubmitInfo(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (bang) {
@@ -225,7 +238,12 @@ export default function Event() {
                     <div className="event-info preserve-whitespace">
                         <h3>{bang.title}</h3>
                         {addNewLines(bang.information)}
-                        {isModerator && <FaEdit className="edit-info" onClick={() => setOpenInfo(true)} />}
+                        {isModerator && (
+                            <span className="event-edit-row" >
+                                <button onClick={handleCloseEvent} className={bang.isOpen ? 'btn btn-warning' : 'btn btn-approve'}>{bang.isOpen ? 'Close Event' : 'Open Event'}</button>
+                                <FaEdit onClick={() => setOpenInfo(true)} className="edit-info" />
+                            </span>
+                        )}
                     </div>
                     {isModerator && (
                         <ManageModerators
@@ -237,7 +255,7 @@ export default function Event() {
                     )}
                     <div className="btn-row">
                         <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
-                        {uid && <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>}
+                        {uid && bang.isOpen && <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>}
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </div>
                     {!uid && <div><span>Login (or refresh if you're already logged in) to submit!</span></div>}

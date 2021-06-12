@@ -19,7 +19,8 @@ export default function CreateEvent() {
         creatorId: uid ? uid : '',
         creatorName: creatorName ? creatorName : '',
         public: false,
-        moderators: [uid ? uid : '',]
+        moderators: [uid ? uid : '',],
+        isOpen: true
     });
 
 
