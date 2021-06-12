@@ -240,7 +240,7 @@ export default function Event() {
                         {uid && <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>}
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </div>
-                    {!uid && <div><span>Login to submit!</span></div>}
+                    {!uid && <div><span>Login (or refresh if you're already logged in) to submit!</span></div>}
                     {!isModerator && (
                         <fieldset>
                             <input
