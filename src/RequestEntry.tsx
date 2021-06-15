@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment as p, useEffect, useState } from 'react';
 import { Entry, User } from './types';
 import firebase from 'firebase/app';
 
@@ -61,10 +61,9 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                     <td>{entry.characters.join(', ')}</td>
                     <td>{entry.pairings && entry.pairings.map(p => { return [p.a, p.b].join(' x '); }).map((pair, i) => {
                         return (
-                            <Fragment key={i}>
+                            <p key={i}>
                                 {pair}
-                                {i < entry.pairings.length - 1 && <br />}
-                            </Fragment>
+                            </p>
                         );
                     })}</td>
                     <td>{entry.tags.join(', ')}</td>
