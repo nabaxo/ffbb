@@ -20,11 +20,14 @@ interface listEntry {
 export default function Event() {
     const { id: bid } = useParams<ParamTypes>();
     const [bang, setBang] = useState<Bang>();
-    const [ageConfirm, setAgeConfirm] = useState<boolean>(false);
+    const [isModerator, setIsModerator] = useState<boolean>();
+    const [ageConfirm, setAgeConfirm] = useState<'G-T' | 'E-M' | 'show-all'>('G-T');
+    const [requestBeta, setRequestBeta] = useState<boolean>(false);
+    // TODO: Experimental stuff
+    // const [userList, setUserList] = useState<listEntry[]>();
     const [rawList, setRawList] = useState<listEntry[]>();
     const [filteredList, setFilteredList] = useState<listEntry[]>();
     const uid = firebase.auth().currentUser?.uid;
-    const [isModerator, setIsModerator] = useState<boolean>();
     const [details, setDetails] = useState<string>();
     const [openInfo, setOpenInfo] = useState<boolean>();
     const userDocRef = firebase.firestore().collection('users').doc(uid);
@@ -46,6 +49,7 @@ export default function Event() {
         });
 
         if (isModerator) {
+            setAgeConfirm('show-all');
             const unsubscribe = collection.onSnapshot((snapshot) => {
                 setRawList(snapshot.docs.map(d => {
                     const e: listEntry = {
@@ -64,31 +68,37 @@ export default function Event() {
 
             return unsubscribe;
         } else {
-            if (ageConfirm) {
-                const unsubscribe = collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
-                    setRawList(snapshot.docs.map(d => {
-                        return ({
-                            id: d.id,
-                            entry: d.data() as Entry
-                        });
-                    }));
-                });
+            const unsubscribe = collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
+                setRawList(snapshot.docs.map(d => {
+                    return ({
+                        id: d.id,
+                        entry: d.data() as Entry
+                    });
+                }));
+            });
 
-                return unsubscribe;
-            } else {
-                const unsubscribe = collection.where('isPublished', '==', true).where('ageRating', '==', 'G-T').onSnapshot((snapshot) => {
-                    setRawList(snapshot.docs.map(d => {
-                        return ({
-                            id: d.id,
-                            entry: d.data() as Entry
-                        });
-                    }));
-                });
+            return unsubscribe;
 
-                return unsubscribe;
-            }
         }
-    }, [bid, isModerator, ageConfirm]);
+    }, [bid, isModerator]);
+
+    // TODO: Experimental stuff
+    // useEffect(() => {
+    //     if (uid && bid && !isModerator) {
+    //         const collection = firebase.firestore().collection('events').doc(bid).collection('requests');
+
+    //         const unsubscribe = collection.where('uid', '==', uid).where('isPublished', '==', false).onSnapshot((snapshot) => {
+    //             setUserList(snapshot.docs.map(d => {
+    //                 return ({
+    //                     id: d.id,
+    //                     entry: d.data() as Entry
+    //                 });
+    //             }));
+    //         });
+
+    //         return unsubscribe;
+    //     }
+    // }, [uid, bid, isModerator]);
 
     useEffect(() => {
         if (bang && uid && bang.moderators.includes(uid)) {
@@ -111,10 +121,19 @@ export default function Event() {
     }, [uid, userDocRef]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
+        let l;
+        // TODO: Experimental stuff
+        // if (rawList && userList) {
+        //     l = [...rawList, ...userList];
+        // }
+        // else
         if (rawList) {
+            l = rawList;
+        }
+        if (l) {
             const value = event.target.value.toLowerCase();
 
-            const filterList = rawList.filter(i => (
+            const filterList = l.filter(i => (
                 i.id.toLowerCase().includes(value) ||
                 i.entry.summary.toLowerCase().includes(value) ||
                 i.entry.characters.join(' ').toLowerCase().includes(value) ||
@@ -131,16 +150,33 @@ export default function Event() {
     }
 
     const list = (() => {
+        let l;
         if (filteredList) {
-            return filteredList;
+            l = filteredList;
         }
         else if (rawList) {
-            return rawList;
+            l = rawList;
         }
+        if (l) {
+            if (ageConfirm === 'G-T') {
+                l = l.filter(e => e.entry.ageRating === 'G-T');
+            }
+            else if (ageConfirm === 'E-M') {
+                l = l.filter(e => e.entry.ageRating === 'E-M');
+            }
+            if (requestBeta) {
+                l = l.filter(e => e.entry.requestBeta);
+            }
+        }
+        // TODO: Experimental stuff
+        // if (userList && l && !filteredList) {
+        //     l = [...l, ...userList];
+        // }
+        return l;
     })();
 
-    function handleAgeCheck(event: ChangeEvent<any>) {
-        setAgeConfirm(event.target.checked);
+    function handleWantsBeta(event: ChangeEvent<any>) {
+        setRequestBeta(event.target.checked);
     }
 
     function addModerator(mod: string) {
@@ -259,18 +295,32 @@ export default function Event() {
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </div>
                     {!uid && <div><span>Login (or refresh if you're already logged in) to submit!</span></div>}
-                    {!isModerator && (
-                        <fieldset>
+                    <fieldset className="column gap">
+                        <form className="row gap" action="">
+                            <span>
+                                <input type="radio" id="G-T" name="age-filter" checked={ageConfirm === 'G-T'} onChange={() => setAgeConfirm('G-T')} />
+                                <label htmlFor="G-T">Show only G-T submissions</label>
+                            </span>
+                            <span>
+                                <input type="radio" id="E-M" name="age-filter" checked={ageConfirm === 'E-M'} onChange={() => setAgeConfirm('E-M')} />
+                                <label htmlFor="E-M">Show only E-M submissions</label>
+                            </span>
+                            <span>
+                                <input type="radio" id="all" name="age-filter" checked={ageConfirm === 'show-all'} onChange={() => setAgeConfirm('show-all')} />
+                                <label htmlFor="all">Show all submissions</label>
+                            </span>
+                        </form>
+                        <div>
                             <input
                                 type="checkbox"
-                                name="age-gate"
-                                id="age-gate"
-                                checked={ageConfirm}
-                                onChange={handleAgeCheck}
+                                name="wants-beta"
+                                id="wants-beta"
+                                checked={requestBeta}
+                                onChange={handleWantsBeta}
                             />
-                            <label htmlFor="age-gate">&nbsp;Show 18+ fics</label>
-                        </fieldset>
-                    )}
+                            <label htmlFor="wants-beta">&nbsp;Wants a beta</label>
+                        </div>
+                    </fieldset>
                 </div>
                 <div className="event-table">
                     {list && list.length ? (
@@ -288,8 +338,9 @@ export default function Event() {
                                     <th>Tier</th>
                                     {isModerator && <th>Message to mods</th>}
                                 </tr>
-                            </thead><tbody>
-                                {list.map(e => <RequestEntry
+                            </thead>
+                            <tbody>
+                                {list && list.map(e => <RequestEntry
                                     key={e.id}
                                     entryId={e.id}
                                     entry={e.entry}
@@ -299,7 +350,7 @@ export default function Event() {
                                     setDetails={setDetails}
                                 />)}
                             </tbody>
-                            {isModerator && <tfoot>
+                            {isModerator && list && <tfoot>
                                 <tr>
                                     <td colSpan={5}>Total number of sumbission are: {list.length}</td>
                                 </tr>

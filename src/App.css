@@ -52,6 +52,10 @@ body {
     padding: 0;
 }
 
+.gap {
+    gap: 1ch;
+}
+
 @media (prefers-reduced-motion: reduce) {
     :root {
         --animation: none;
@@ -210,6 +214,7 @@ footer a {
 
 .btn {
     text-decoration: none;
+    font-weight: bold;
     color: #fff;
     padding: 1ch;
     border-radius: var(--radius);

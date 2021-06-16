@@ -52,7 +52,7 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
 
     return (
         <>
-            {(isModerator || entry.isPublished) && (
+            {(isModerator || entry.isPublished || entry.uid === localStorage.getItem('uid')) && (
                 <tr className={entry.isPublished ? '' : 'not-approved'}>
                     <td><code>{entryId.substring(0, 3).toUpperCase()}</code></td>
                     <td>{entry.requestBeta ? 'Yes' : 'No'}</td>
@@ -73,6 +73,11 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                     <td>{entry.tier}</td>
                     {isModerator && modMessage ? <td>{addLineBreaks(modMessage)}</td> : isModerator && <td></td>}
                 </tr>)}
+            {(!isModerator && entry.uid === localStorage.getItem('uid')) && (
+                <tr>
+                    <td colSpan={9}>Above is your submission. If it's red, it has not been approved yet.</td>
+                </tr>
+            )}
             {isModerator && (
                 <tr className="mod-bar">
                     <td><button className={entry.isPublished ? 'btn btn-warning' : 'btn btn-approve'} onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
