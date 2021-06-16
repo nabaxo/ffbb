@@ -23,6 +23,7 @@ export default function Event() {
     const [isModerator, setIsModerator] = useState<boolean>();
     const [ageConfirm, setAgeConfirm] = useState<'G-T' | 'E-M' | 'show-all'>('G-T');
     const [requestBeta, setRequestBeta] = useState<boolean>(false);
+    const [onlyUnpublished, setOnlyUnpublished] = useState<boolean>(false);
     // TODO: Experimental stuff
     // const [userList, setUserList] = useState<listEntry[]>();
     const [rawList, setRawList] = useState<listEntry[]>();
@@ -167,6 +168,9 @@ export default function Event() {
             if (requestBeta) {
                 l = l.filter(e => e.entry.requestBeta);
             }
+            if (onlyUnpublished) {
+                l = l.filter(e => !e.entry.isPublished);
+            }
         }
         // TODO: Experimental stuff
         // if (userList && l && !filteredList) {
@@ -177,6 +181,10 @@ export default function Event() {
 
     function handleWantsBeta(event: ChangeEvent<any>) {
         setRequestBeta(event.target.checked);
+    }
+
+    function handleOnlyUnpublished(event: ChangeEvent<any>) {
+        setOnlyUnpublished(event.target.checked);
     }
 
     function addModerator(mod: string) {
@@ -310,15 +318,27 @@ export default function Event() {
                                 <label htmlFor="all">Show all submissions</label>
                             </span>
                         </form>
-                        <div>
-                            <input
-                                type="checkbox"
-                                name="wants-beta"
-                                id="wants-beta"
-                                checked={requestBeta}
-                                onChange={handleWantsBeta}
-                            />
-                            <label htmlFor="wants-beta">&nbsp;Wants a beta</label>
+                        <div className="row gap">
+                            <span>
+                                <input
+                                    type="checkbox"
+                                    name="wants-beta"
+                                    id="wants-beta"
+                                    checked={requestBeta}
+                                    onChange={handleWantsBeta}
+                                />
+                                <label htmlFor="wants-beta">&nbsp;Wants a beta</label>
+                            </span>
+                            {isModerator && <span>
+                                <input
+                                    type="checkbox"
+                                    name="only-unpublished"
+                                    id="only-unpublished"
+                                    checked={onlyUnpublished}
+                                    onChange={handleOnlyUnpublished}
+                                />
+                                <label htmlFor="only-unpublished">&nbsp;[Mods] Show only unpublished</label>
+                            </span>}
                         </div>
                     </fieldset>
                 </div>
