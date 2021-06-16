@@ -435,7 +435,10 @@ td {
     background-color: #fff;
     padding: 0 1rem;
     overflow-y: auto;
-    border-radius: 1rem;
+}
+
+.overlay-text:focus {
+    outline: var(--border);
 }
 
 .close-x {
