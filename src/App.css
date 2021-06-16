@@ -336,6 +336,7 @@ thead tr {
     background-color: #dedede !important;
 }
 
+/* thead { */
 th {
     padding-inline: 1rem;
     border-bottom: var(--border);

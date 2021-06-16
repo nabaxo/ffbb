@@ -14,8 +14,14 @@ export default function DetailsOverlay({ text, setDetails }: IProps) {
         }
     }, []);
 
+    function closeDetails(event: React.KeyboardEvent<HTMLElement>) {
+        if (event.key === 'Escape') {
+            setDetails('');
+        }
+    }
+
     return (
-        <div className="column overlay">
+        <div className="column overlay" onKeyDown={closeDetails}>
             <div className="overlay-bg" onClick={() => setDetails('')}></div>
             <div className="column overlay-container">
                 <p tabIndex={0} ref={ref} className="overlay-text preserve-whitespace">{text}</p>
