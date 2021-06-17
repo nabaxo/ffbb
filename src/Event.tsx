@@ -121,45 +121,45 @@ export default function Event() {
         }
     }, [uid, userDocRef]);
 
+    useEffect(() => {
+        return () => { };
+    }, []);
+
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
         setSearchQuery(event.target.value.toLowerCase());
     }
 
-    const list = (() => {
-        let l;
-        if (rawList) {
-            l = rawList;
+    const list = rawList?.filter(i => (
+        i.id.toLowerCase().includes(searchQuery) ||
+        i.entry.summary.toLowerCase().includes(searchQuery) ||
+        i.entry.characters.join(' ').toLowerCase().includes(searchQuery) ||
+        i.entry.tags.join(' ').toLowerCase().includes(searchQuery) ||
+        i.entry.archiveWarnings?.join(' ').toLowerCase().includes(searchQuery) ||
+        i.modMessage?.toLowerCase().includes(searchQuery)
+    )).filter(i => {
+        if (ageConfirm === 'G-T') {
+            return i.entry.ageRating === 'G-T';
         }
-        if (l) {
-            if (searchQuery) {
-                l = l.filter(i => (
-                    i.id.toLowerCase().includes(searchQuery) ||
-                    i.entry.summary.toLowerCase().includes(searchQuery) ||
-                    i.entry.characters.join(' ').toLowerCase().includes(searchQuery) ||
-                    i.entry.tags.join(' ').toLowerCase().includes(searchQuery) ||
-                    i.entry.archiveWarnings?.join(' ').toLowerCase().includes(searchQuery) ||
-                    i.modMessage?.toLowerCase().includes(searchQuery)
-                ));
-            }
-            if (ageConfirm === 'G-T') {
-                l = l.filter(e => e.entry.ageRating === 'G-T');
-            }
-            else if (ageConfirm === 'E-M') {
-                l = l.filter(e => e.entry.ageRating === 'E-M');
-            }
-            if (requestBeta) {
-                l = l.filter(e => e.entry.requestBeta);
-            }
-            if (onlyUnpublished) {
-                l = l.filter(e => !e.entry.isPublished);
-            }
+        else if (ageConfirm === 'E-M') {
+            return i.entry.ageRating === 'E-M';
         }
-        // TODO: Experimental stuff
-        // if (userList && l && !filteredList) {
-        //     l = [...l, ...userList];
-        // }
-        return l;
-    })();
+        return i;
+    }).filter(i => {
+        if (requestBeta) {
+            return i.entry.requestBeta;
+        }
+        return i;
+    }).filter(i => {
+        if (onlyUnpublished) {
+            return !i.entry.isPublished;
+        }
+        return i;
+    });
+
+    // TODO: Experimental stuff
+    // if (userList && l && !filteredList) {
+    //     l = [...l, ...userList];
+    // }
 
     function handleWantsBeta(event: ChangeEvent<any>) {
         setRequestBeta(event.target.checked);
