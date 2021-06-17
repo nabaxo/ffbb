@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, useMemo, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
 import { FaEdit } from 'react-icons/fa';
 import { Entry, Bang, User } from './types';
@@ -129,32 +129,34 @@ export default function Event() {
         setSearchQuery(event.target.value.toLowerCase());
     }
 
-    const list = rawList?.filter(i => (
-        i.id.toLowerCase().includes(searchQuery) ||
-        i.entry.summary.toLowerCase().includes(searchQuery) ||
-        i.entry.characters.join(' ').toLowerCase().includes(searchQuery) ||
-        i.entry.tags.join(' ').toLowerCase().includes(searchQuery) ||
-        i.entry.archiveWarnings?.join(' ').toLowerCase().includes(searchQuery) ||
-        i.modMessage?.toLowerCase().includes(searchQuery)
-    )).filter(i => {
-        if (ageConfirm === 'G-T') {
-            return i.entry.ageRating === 'G-T';
-        }
-        else if (ageConfirm === 'E-M') {
-            return i.entry.ageRating === 'E-M';
-        }
-        return i;
-    }).filter(i => {
-        if (requestBeta) {
-            return i.entry.requestBeta;
-        }
-        return i;
-    }).filter(i => {
-        if (onlyUnpublished) {
-            return !i.entry.isPublished;
-        }
-        return i;
-    });
+    const list = useMemo(() => {
+        return rawList?.filter(i => (
+            i.id.toLowerCase().includes(searchQuery) ||
+            i.entry.summary.toLowerCase().includes(searchQuery) ||
+            i.entry.characters.join(' ').toLowerCase().includes(searchQuery) ||
+            i.entry.tags.join(' ').toLowerCase().includes(searchQuery) ||
+            i.entry.archiveWarnings?.join(' ').toLowerCase().includes(searchQuery) ||
+            i.modMessage?.toLowerCase().includes(searchQuery)
+        )).filter(i => {
+            if (ageConfirm === 'G-T') {
+                return i.entry.ageRating === 'G-T';
+            }
+            else if (ageConfirm === 'E-M') {
+                return i.entry.ageRating === 'E-M';
+            }
+            return i;
+        }).filter(i => {
+            if (requestBeta) {
+                return i.entry.requestBeta;
+            }
+            return i;
+        }).filter(i => {
+            if (onlyUnpublished) {
+                return !i.entry.isPublished;
+            }
+            return i;
+        });
+    }, [rawList, searchQuery, ageConfirm, requestBeta, onlyUnpublished]);
 
     // TODO: Experimental stuff
     // if (userList && l && !filteredList) {
