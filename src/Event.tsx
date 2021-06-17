@@ -27,7 +27,7 @@ export default function Event() {
     // TODO: Experimental stuff
     // const [userList, setUserList] = useState<listEntry[]>();
     const [rawList, setRawList] = useState<listEntry[]>();
-    const [filteredList, setFilteredList] = useState<listEntry[]>();
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const uid = firebase.auth().currentUser?.uid;
     const [details, setDetails] = useState<string>();
     const [openInfo, setOpenInfo] = useState<boolean>();
@@ -68,7 +68,8 @@ export default function Event() {
             });
 
             return unsubscribe;
-        } else {
+        }
+        else {
             const unsubscribe = collection.where('isPublished', '==', true).onSnapshot((snapshot) => {
                 setRawList(snapshot.docs.map(d => {
                     return ({
@@ -79,7 +80,6 @@ export default function Event() {
             });
 
             return unsubscribe;
-
         }
     }, [bid, isModerator]);
 
@@ -122,43 +122,25 @@ export default function Event() {
     }, [uid, userDocRef]);
 
     function handleFilter(event: ChangeEvent<HTMLInputElement>) {
-        let l;
-        // TODO: Experimental stuff
-        // if (rawList && userList) {
-        //     l = [...rawList, ...userList];
-        // }
-        // else
-        if (rawList) {
-            l = rawList;
-        }
-        if (l) {
-            const value = event.target.value.toLowerCase();
-
-            const filterList = l.filter(i => (
-                i.id.toLowerCase().includes(value) ||
-                i.entry.summary.toLowerCase().includes(value) ||
-                i.entry.characters.join(' ').toLowerCase().includes(value) ||
-                i.entry.tags.join(' ').toLowerCase().includes(value) ||
-                i.entry.archiveWarnings?.join(' ').toLowerCase().includes(value) ||
-                i.modMessage?.toLowerCase().includes(value)
-            ));
-            if (value === '') {
-                setFilteredList(undefined);
-            } else {
-                setFilteredList(filterList);
-            }
-        }
+        setSearchQuery(event.target.value.toLowerCase());
     }
 
     const list = (() => {
         let l;
-        if (filteredList) {
-            l = filteredList;
-        }
-        else if (rawList) {
+        if (rawList) {
             l = rawList;
         }
         if (l) {
+            if (searchQuery) {
+                l = l.filter(i => (
+                    i.id.toLowerCase().includes(searchQuery) ||
+                    i.entry.summary.toLowerCase().includes(searchQuery) ||
+                    i.entry.characters.join(' ').toLowerCase().includes(searchQuery) ||
+                    i.entry.tags.join(' ').toLowerCase().includes(searchQuery) ||
+                    i.entry.archiveWarnings?.join(' ').toLowerCase().includes(searchQuery) ||
+                    i.modMessage?.toLowerCase().includes(searchQuery)
+                ));
+            }
             if (ageConfirm === 'G-T') {
                 l = l.filter(e => e.entry.ageRating === 'G-T');
             }
