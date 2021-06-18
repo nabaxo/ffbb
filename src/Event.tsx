@@ -281,12 +281,13 @@ export default function Event() {
                             removeModerator={removeModerator}
                         />
                     )}
+                    {!uid && bang.isOpen && <div className="info">Login (or refresh if you're already logged in) to submit!</div>}
+                    {!bang.isOpen && <div className="info">Event is closed for new submissions.</div>}
                     <div className="btn-row">
                         <input className="filter" type="text" placeholder="Filter..." onChange={handleFilter} />
                         {uid && bang.isOpen && <a className="btn btn-submit btn-new-summary" href={'/event/' + bid + '/submit'} >Submit New!</a>}
                         {joinedBangs && !joinedBangs.includes(bid) && <button className="btn btn-approve" onClick={joinBang}>Join event</button>}
                     </div>
-                    {!uid && <div><span>Login (or refresh if you're already logged in) to submit!</span></div>}
                     <fieldset className="column gap">
                         <form className="row gap" action="">
                             <span>

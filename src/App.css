@@ -41,6 +41,7 @@ body {
     display: flex;
     flex-direction: column;
     padding: 1ch;
+    margin: 0;
 }
 
 .center {
@@ -196,7 +197,7 @@ footer a {
     border: var(--border);
     border-radius: var(--radius);
     background-color: var(--yellow-light);
-    margin: 1ch;
+    /* margin: 1ch; */
     padding: 1ch;
 }
 
@@ -277,11 +278,11 @@ fieldset {
     margin: 1ch 0;
     border-radius: var(--radius);
     border: var(--border);
+    background-color: #fff;
 }
 
 .moderator-box {
     border-radius: var(--radius);
-    background-color: #fff;
     border: var(--border);
 }
 
@@ -336,7 +337,7 @@ thead tr {
     background-color: #dedede !important;
 }
 
-/* thead { */
+thead,
 th {
     padding-inline: 1rem;
     border-bottom: var(--border);
