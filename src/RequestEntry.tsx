@@ -71,18 +71,19 @@ export default function RequestEntry({ entryId, entry, modMessage, isModerator, 
                         {addLineBreaks(entry.summary)}
                     </td>
                     <td>{entry.tier}</td>
+                    {isModerator && <td>{entry.authorRequestAge ? 'Yes' : 'No'}</td>}
                     {isModerator && modMessage ? <td>{addLineBreaks(modMessage)}</td> : isModerator && <td></td>}
                 </tr>)}
-            {(!isModerator && entry.uid === localStorage.getItem('uid')) && (
+            {/* {(!isModerator && entry.uid === localStorage.getItem('uid')) && (
                 <tr>
                     <td colSpan={9}>Above is your submission. If it's red, it has not been approved yet.</td>
                 </tr>
-            )}
+            )} */}
             {isModerator && (
                 <tr className="mod-bar">
                     <td><button className={entry.isPublished ? 'btn btn-warning' : 'btn btn-approve'} onClick={approve} >{entry.isPublished ? 'Deny' : 'Approve'}</button></td>
                     <td><button className="btn btn-delete" onClick={confirmDialog}>Delete</button></td>
-                    <td colSpan={8}>Submitted by: {requestUser ? requestUser.displayName : '[Error: Unknown User]'}</td>
+                    <td colSpan={9}>Submitted by: {requestUser ? requestUser.displayName : '[Error: Unknown User]'}</td>
                 </tr>
             )}
         </>

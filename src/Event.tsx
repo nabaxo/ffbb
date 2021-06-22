@@ -24,6 +24,7 @@ export default function Event() {
     const [ageConfirm, setAgeConfirm] = useState<'G-T' | 'E-M' | 'show-all'>('G-T');
     const [requestBeta, setRequestBeta] = useState<boolean>(false);
     const [onlyUnpublished, setOnlyUnpublished] = useState<boolean>(false);
+    const [onlyOld, setOnlyOld] = useState<boolean>(false);
     // TODO: Experimental stuff
     // const [userList, setUserList] = useState<listEntry[]>();
     const [rawList, setRawList] = useState<listEntry[]>();
@@ -151,12 +152,17 @@ export default function Event() {
             }
             return i;
         }).filter(i => {
+            if (onlyOld) {
+                return i.entry.authorRequestAge;
+            }
+            return i;
+        }).filter(i => {
             if (onlyUnpublished) {
                 return !i.entry.isPublished;
             }
             return i;
         });
-    }, [rawList, searchQuery, ageConfirm, requestBeta, onlyUnpublished]);
+    }, [rawList, searchQuery, ageConfirm, requestBeta, onlyUnpublished, onlyOld]);
 
     // TODO: Experimental stuff
     // if (userList && l && !filteredList) {
@@ -169,6 +175,10 @@ export default function Event() {
 
     function handleOnlyUnpublished(event: ChangeEvent<any>) {
         setOnlyUnpublished(event.target.checked);
+    }
+
+    function handleOnlyOld(event: ChangeEvent<any>) {
+        setOnlyOld(event.target.checked);
     }
 
     function addModerator(mod: string) {
@@ -324,6 +334,16 @@ export default function Event() {
                                 />
                                 <label htmlFor="only-unpublished">&nbsp;[Mods] Show only unpublished</label>
                             </span>}
+                            {isModerator && <span>
+                                <input
+                                    type="checkbox"
+                                    name="only-old"
+                                    id="only-old"
+                                    checked={onlyOld}
+                                    onChange={handleOnlyOld}
+                                />
+                                <label htmlFor="only-old">&nbsp;[Mods] Requests 18+</label>
+                            </span>}
                         </div>
                     </fieldset>
                 </div>
@@ -341,6 +361,7 @@ export default function Event() {
                                     <th>Tags</th>
                                     <th>Summary</th>
                                     <th>Tier</th>
+                                    {isModerator && <th>Request 18+</th>}
                                     {isModerator && <th>Message to mods</th>}
                                 </tr>
                             </thead>
